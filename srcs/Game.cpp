@@ -11,9 +11,10 @@ Game::Game(int width, int height, std::string name) {
     this->_window = new sf::RenderWindow(_videoMode, name, sf::Style::Default);
     this->_window->setVerticalSyncEnabled(true);
 
-    if (!this->_texture.loadFromFile("rsrcs/assets/image.png"))
+    if (!this->_texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 0, 8, 8)))
         std::cerr << "Texture failed." << std::endl;
     this->_sprite.setTexture(this->_texture);
+    this->_sprite.scale(8, 8);
     this->_sprite.setPosition(100, 100);
 }
 
