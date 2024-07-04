@@ -5,13 +5,11 @@
 */
 
 Window::Window(const char *name, int width, int height) {
-    std::cout << "Constructor Window" << std::endl;
-
-    if (!glfwInit()) {
+    if (!glfwInit())
         throw WindowFailed(0);
-        return ;
-    }
 
+    std::cout << "Constructor Window" << std::endl;
+    
     this->_name = name;
     this->_height = height;
     this->_width = width;
@@ -20,7 +18,6 @@ Window::Window(const char *name, int width, int height) {
     if (!this->_window) {
         glfwTerminate();
         throw WindowFailed(1);
-        return ;
     }
 
     glfwMakeContextCurrent(this->_window);
