@@ -1,6 +1,7 @@
 #ifndef GAME_HPP
 # define GAME_HPP
 
+# include <iostream>
 # include <SFML/Graphics.hpp>
 # include <SFML/System.hpp>
 # include <SFML/Window.hpp>
@@ -12,6 +13,7 @@ class Game {
         sf::RenderWindow    *_window;
         sf::VideoMode       _videoMode;
         sf::Event           _event;
+        sf::Sprite          _sprite;
     public:
         Game(int width, int height, std::string name);
         ~Game();
