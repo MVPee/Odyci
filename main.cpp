@@ -1,21 +1,14 @@
 # include <iostream>
-# include <GLFW/glfw3.h>
-# include "includes/Window.hpp"
+# include "includes/Game.hpp"
 
-int main(void)
+int main()
 {
-    try {
-        Window Window("Odyci", 1000, 800);
+    Game game(800, 600, "Odyci");
 
-        while (!glfwWindowShouldClose(Window.getWindow())) {
-            glClear(GL_COLOR_BUFFER_BIT);
-            glfwSwapBuffers(Window.getWindow());
-            glfwPollEvents();
-        }
-    } 
-    catch (std::exception &e) {
-        std::cerr << e.what() << std::endl;
-        return (1);
+    while (game.isRunning()) {
+        game.update();
+        game.render();
     }
-    return (0);
+
+    return 0;
 }

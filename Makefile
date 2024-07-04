@@ -3,11 +3,11 @@ NAME = Odyci
 OBJS_DIR = .objs
 
 SRCS = 	main.cpp \
-		srcs/Window.cpp
+		srcs/Game.cpp
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.cpp=%.o))
 CXX = g++
-CXXFLAGS = -lglfw -lGL -lGLEW
+CXXFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
 
 RED = \033[0;31m
 ORANGE=\033[0;33m
