@@ -7,8 +7,10 @@
 Window::Window(const char *name, int width, int height) {
     std::cout << "Constructor Window" << std::endl;
 
-    if (!glfwInit())
+    if (!glfwInit()) {
         throw WindowFailed(0);
+        return ;
+    }
 
     this->_name = name;
     this->_height = height;
@@ -30,6 +32,7 @@ Window::Window(const char *name, int width, int height) {
 
 Window::~Window() {
     std::cout << "Destructor Window" << std::endl;
+    glfwDestroyWindow(this->_window);
     glfwTerminate();
 }
 

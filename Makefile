@@ -7,7 +7,7 @@ SRCS = 	main.cpp \
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.cpp=%.o))
 CXX = g++
-CXXFLAGS = -lglfw -lGL -Wall -Wextra -std=c++11
+CXXFLAGS = -lglfw -lGL
 
 RED = \033[0;31m
 ORANGE=\033[0;33m
