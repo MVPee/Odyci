@@ -1,5 +1,9 @@
 # include "../includes/Game.hpp"
 
+/*
+** ------------------------------- CONSTRUCTOR --------------------------------
+*/
+
 Game::Game(int width, int height, std::string name) {
 
     this->_videoMode.width = width;
@@ -8,9 +12,17 @@ Game::Game(int width, int height, std::string name) {
     this->_window->setVerticalSyncEnabled(true);
 }
 
+/*
+** -------------------------------- DESTRUCTOR --------------------------------
+*/
+
 Game::~Game(void) {
     delete this->_window;
 }
+
+/*
+** --------------------------------- METHODS ----------------------------------
+*/
 
 bool Game::isRunning(void) {
     return (this->_window->isOpen());
@@ -29,3 +41,7 @@ void Game::render(void) {
     this->_window->clear();
     this->_window->display();
 }
+
+/*
+** --------------------------------- ACCESSOR ---------------------------------
+*/
