@@ -3,7 +3,8 @@ NAME = Odyci
 OBJS_DIR = .objs
 
 SRCS = 	main.cpp \
-		srcs/Game.cpp
+		srcs/Game.cpp \
+		srcs/Map.cpp
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.cpp=%.o))
 CXX = g++

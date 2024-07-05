@@ -7,14 +7,14 @@
 # include <SFML/Window.hpp>
 # include <SFML/Audio.hpp>
 # include <SFML/Network.hpp>
+# include "Map.hpp"
 
 class Game {
     private:
         sf::RenderWindow    *_window;
-        sf::VideoMode       _videoMode;
+        sf::VideoMode       _screen;
         sf::Event           _event;
-        sf::Sprite          _sprite;
-        sf::Texture         _texture;
+        Map                 *_map;
     public:
         Game(int width, int height, std::string name);
         ~Game();

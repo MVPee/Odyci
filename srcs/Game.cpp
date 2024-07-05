@@ -6,16 +6,17 @@
 
 Game::Game(int width, int height, std::string name) {
 
-    this->_videoMode.width = width;
-    this->_videoMode.height = height;
-    this->_window = new sf::RenderWindow(_videoMode, name, sf::Style::Default);
+    this->_screen.width = width;
+    this->_screen.height = height;
+    this->_window = new sf::RenderWindow(_screen, name, sf::Style::Default);
     this->_window->setVerticalSyncEnabled(true);
-
-    if (!this->_texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 0, 8, 8)))
-        std::cerr << "Texture failed." << std::endl;
-    this->_sprite.setTexture(this->_texture);
-    this->_sprite.scale(8, 8);
-    this->_sprite.setPosition(100, 100);
+    try {
+        this->_map = new Map("rsrcs/maps/sandbox.ody");
+    }
+    catch (std::exception &e){
+        std::cerr << e.what() << std::endl;
+        this->_window->close();
+    }
 }
 
 /*
@@ -45,7 +46,8 @@ void Game::update(void) {
 
 void Game::render(void) {
     this->_window->clear();
-    this->_window->draw(this->_sprite);
+    // this->_window->draw(this->_sprite[0]);
+    // this->_window->draw(this->_sprite[1]);
     this->_window->display();
 }
 
