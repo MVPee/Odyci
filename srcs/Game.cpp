@@ -46,8 +46,13 @@ void Game::update(void) {
 
 void Game::render(void) {
     this->_window->clear();
-    // this->_window->draw(this->_sprite[0]);
-    // this->_window->draw(this->_sprite[1]);
+
+    for (int y = 0; y < this->_map->getHeight(); ++y) {
+        for (int x = 0; x < this->_map->getWidth(); ++x) {
+            this->_window->draw((this->_map->getMySprite(y, x)));
+        }
+    }
+
     this->_window->display();
 }
 

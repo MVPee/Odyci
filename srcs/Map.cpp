@@ -17,14 +17,21 @@ Map::Map(std::string file) {
     if (getSize(*this->_file))
         throw MapIsNotARectangle();
 
-    this->_map = new int*[this->_height];
+    this->_map = new char*[this->_height];
     for (int i = 0; i < this->_height; i++)
-        this->_map[i] = new int[this->_width];
+        this->_map[i] = new char[this->_width];
 
     this->_file->clear();
     this->_file->seekg(0, std::ios::beg);
 
     parsingMap(*this->_file);
+
+    this->_sprites = new MySprite*[this->_height];
+    for (int y = 0; y < this->_height; y++) {
+        _sprites[y] = new MySprite[_width];
+        for (int x = 0; x < this->_width; x++)
+            this->_sprites[y][x] = MySprite(this->_map[y][x], true, y, x);
+    }
 }
 
 /*
@@ -40,6 +47,11 @@ Map::~Map(void) {
         for (int i = 0; i < this->_height; i++)
             delete[] this->_map[i];
         delete[] this->_map;
+    }
+    if (this->_sprites) {
+        for (int i = 0; i < this->_height; i++)
+            delete[] this->_sprites[i];
+        delete[] this->_sprites;
     }
 }
 
@@ -70,13 +82,29 @@ void Map::parsingMap(std::ifstream &file) {
     while (std::getline(file, line)) {
         y++;
         for(int x = 0; x < line.length(); x++)
-            this->_map[y][x] = line[x] - '0';
+            this->_map[y][x] = line[x];
     }
 }
 
 /*
 ** --------------------------------- ACCESSOR ---------------------------------
 */
+
+int Map::getHeight(void) {
+    return (this->_height);
+}
+
+int Map::getWidth(void) {
+    return (this->_width);
+}
+
+MySprite **Map::getMySprites(void) {
+    return (this->_sprites);
+}
+
+sf::Sprite Map::getMySprite(int y, int x) {
+    return (this->_sprites[y][x].getSprite());
+}
 
 /*
 ** --------------------------------- EXCEPTIONS -------------------------------
