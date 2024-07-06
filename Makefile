@@ -4,8 +4,7 @@ OBJS_DIR = .objs
 
 SRCS = 	main.cpp \
 		srcs/Game.cpp \
-		srcs/Map.cpp \
-		srcs/MySprite.cpp
+		srcs/Player.cpp
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.cpp=%.o))
 CXX = g++

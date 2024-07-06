@@ -1,27 +1,32 @@
 #ifndef GAME_HPP
 # define GAME_HPP
 
-# include <iostream>
-# include <SFML/Graphics.hpp>
-# include <SFML/System.hpp>
-# include <SFML/Window.hpp>
-# include <SFML/Audio.hpp>
-# include <SFML/Network.hpp>
-# include "Map.hpp"
+# include "Macro.hpp"
+# include "Player.hpp"
+
+typedef struct s_key {
+	bool upPressed;
+	bool downPressed;
+	bool rightPressed;
+	bool leftPressed;
+}	t_key;
 
 class Game {
-    private:
-        sf::RenderWindow    *_window;
-        sf::VideoMode       _screen;
-        sf::Event           _event;
-        Map                 *_map;
-    public:
-        Game(int width, int height, std::string name);
-        ~Game();
+	private:
+		sf::RenderWindow	*_window;
+		sf::Event			_event;
+		Player				*_player;
+		t_key				_key;
+	public:
 
-        bool isRunning();
-        void update();
-        void render();
+		Game(int width, int height, std::string name);
+		~Game();
+
+		bool isRunning(void);
+
+		void event(void);
+		void update(void);
+		void display(void);
 };
 
-#endif
+#endif /* ************************************************************ GAME_H */
