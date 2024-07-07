@@ -10,6 +10,7 @@ typedef struct s_key {
 	bool downPressed;
 	bool rightPressed;
 	bool leftPressed;
+	bool spacePressed;
 }	t_key;
 
 class Game {
@@ -21,6 +22,9 @@ class Game {
 		Map					*_map;
 
 		bool check_collision(int x, int y);
+		void updateCamera(void);
+		void checkFalling(void);
+		void jumping(void);
 	public:
 
 		Game(int width, int height, std::string name);

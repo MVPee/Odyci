@@ -8,11 +8,15 @@ class Player
 	private:
 		sf::Texture	_texture;
 		sf::Sprite	_sprite;
+		int			_jumping;
 	public:
 		Player(std::string srcs);
 		~Player(void);
 
-		sf::Sprite& getSprite();
+		int getJumping(void);
+		void setJumping(int i);
+		void jump(int jumpSpeed, bool topCollision);
+		sf::Sprite& getSprite(void);
 };
 
 

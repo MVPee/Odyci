@@ -12,6 +12,7 @@ Game::Game(int width, int height, std::string name) {
 	this->_key.downPressed = false;
 	this->_key.rightPressed	= false;
 	this->_key.leftPressed = false;
+	this->_key.spacePressed = false;
 
 	this->_map = new Map("rsrcs/maps/sandbox.ody");
 
@@ -44,47 +45,58 @@ bool Game::isRunning(void) {
  * @brief Listener of the keyboard input in the window
 */
 void Game::event(void) {
-	while (this->_window->pollEvent(this->_event)) {
-		if (this->_event.type == sf::Event::Closed)
-			this->_window->close();
-		if (this->_event.type == sf::Event::KeyPressed) {
-			switch (this->_event.key.code) {
-				case sf::Keyboard::Escape:
-					this->_window->close();
-					break;
-				case sf::Keyboard::Up:
-					this->_key.upPressed = true;
-					break;
-				case sf::Keyboard::Down:
-					this->_key.downPressed = true;
-					break;
-				case sf::Keyboard::Right:
-					this->_key.rightPressed = true;
-					break;
-				case sf::Keyboard::Left:
-					this->_key.leftPressed = true;
-					break;
-			}
-		}
-		if (this->_event.type == sf::Event::KeyReleased) {
-			switch (this->_event.key.code) {
-				case sf::Keyboard::Up:
-					this->_key.upPressed = false;
-					break;
-				case sf::Keyboard::Down:
-					this->_key.downPressed = false;
-					break;
-				case sf::Keyboard::Right:
-					this->_key.rightPressed = false;
-					break;
-				case sf::Keyboard::Left:
-					this->_key.leftPressed = false;
-					break;
-			}
-		}
-	}
+    while (this->_window->pollEvent(this->_event)) {
+        if (this->_event.type == sf::Event::Closed)
+            this->_window->close();
+        if (this->_event.type == sf::Event::KeyPressed) {
+            switch (this->_event.key.code) {
+                case sf::Keyboard::Escape:
+                    this->_window->close();
+                    break;
+                case sf::Keyboard::W:
+                    this->_key.upPressed = true;
+                    break;
+                case sf::Keyboard::S:
+                    this->_key.downPressed = true;
+                    break;
+                case sf::Keyboard::D:
+                    this->_key.rightPressed = true;
+                    break;
+                case sf::Keyboard::A:
+                    this->_key.leftPressed = true;
+                    break;
+                case sf::Keyboard::Space:
+                    this->_key.spacePressed = true;
+                    break;
+            }
+        }
+        if (this->_event.type == sf::Event::KeyReleased) {
+            switch (this->_event.key.code) {
+                case sf::Keyboard::W:
+                    this->_key.upPressed = false;
+                    break;
+                case sf::Keyboard::S:
+                    this->_key.downPressed = false;
+                    break;
+                case sf::Keyboard::D:
+                    this->_key.rightPressed = false;
+                    break;
+                case sf::Keyboard::A:
+                    this->_key.leftPressed = false;
+                    break;
+                case sf::Keyboard::Space:
+                    this->_key.spacePressed = false;
+                    break;
+            }
+        }
+    }
 }
 
+
+/** 
+ * @brief Check the collision of the wall's map with the player
+ * @return true if collision otherwise false
+*/
 bool Game::check_collision(int xSpeed, int ySpeed) {
 	sf::FloatRect nextPos = this->_player->getSprite().getGlobalBounds();
 	nextPos.left += xSpeed;
@@ -102,21 +114,64 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
 }
 
 /** 
+ * @brief Update the camera in the middle of the screen
+*/
+void Game::updateCamera(void) {
+    int screenX = this->_window->getSize().x / 2;
+    int screenY = this->_window->getSize().y / 2;
+
+    int playerX = this->_player->getSprite().getPosition().x;
+    int playerY = this->_player->getSprite().getPosition().y;
+
+    int moveX = (screenX - playerX)/10;
+    int moveY = (screenY - playerY)/10;
+
+    this->_player->getSprite().move(moveX, moveY);
+    for (int i = 0; i < this->_map->getSize().height; i++) {
+        for (int j = 0; j < this->_map->getSize().width; j++) {
+            this->_map->getSprite(i, j).move(moveX, moveY);
+        }
+    }
+}
+
+void Game::checkFalling(void) {
+	int temp;
+
+	temp = SPEED_FALLING;
+	if (!this->_player->getJumping()) {
+		if (check_collision(0, SPEED_FALLING))
+			this->_player->getSprite().move(0, SPEED_FALLING);
+		else {
+			while (!check_collision(0, temp))
+				temp--;
+			this->_player->getSprite().move(0, temp);
+		}
+	}
+}
+
+/** 
  * @brief Update the window
 */
-void Game::update() {
+void Game::update(void) {
+	updateCamera();
+	checkFalling();
+
     if (this->_key.rightPressed && check_collision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);
     }
 	if (this->_key.leftPressed && check_collision(-SPEED, 0)) {
         this->_player->getSprite().move(-SPEED, 0);
     }
-	if (this->_key.downPressed && check_collision(0, SPEED)) {
-        this->_player->getSprite().move(0, SPEED);
-    }
-	if (this->_key.upPressed && check_collision(0, -SPEED)) {
-        this->_player->getSprite().move(0, -SPEED);
-    }
+	// if (this->_key.downPressed && check_collision(0, SPEED)) {
+    //     this->_player->getSprite().move(0, SPEED);
+    // }
+	// if (this->_key.upPressed && check_collision(0, -SPEED)) {
+    //     this->_player->getSprite().move(0, -SPEED);
+    // }
+
+	if (((this->_key.spacePressed && !check_collision(0, 1)) || this->_player->getJumping() > 0)) {
+		this->_player->jump(JUMP_SPEED, check_collision(0, -JUMP_SPEED));
+	}
 }
 
 /** 
@@ -124,7 +179,7 @@ void Game::update() {
 */
 void Game::display(void) {
 	this->_window->clear();
-	
+
 	for (int i = 0; i < this->_map->getSize().height; i++)
 		for (int j = 0; j < this->_map->getSize().width; j++)
 			this->_window->draw(this->_map->getSprite(i, j));

@@ -38,9 +38,6 @@ Map::Map(std::string srcs) {
 	if (setMap(srcs))
 		return ;
 	setAssets();
-
-	for (int i = 0; i <= this->_height; i++)
-		std::cout << this->_map[i] << std::endl;
 }
 
 /*
@@ -68,6 +65,7 @@ Map::~Map() {
 bool Map::setMap(std::string srcs) {
 	std::ifstream file;
 	std::string line;
+
 	file.open(srcs);
 	if (!file.is_open())
 		return (true);
