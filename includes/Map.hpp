@@ -8,6 +8,7 @@ typedef struct s_assets {
 	sf::Texture texture;
 	char		c;
 	bool		hitbox;
+	bool		kill;
 }	t_assets;
 
 class Map
@@ -27,6 +28,7 @@ class Map
 		sf::IntRect getSize(void);
 		sf::Sprite &getSprite(int y, int x);
 		bool getHitbox(int y, int x);
+		bool getKill(int y, int x);
 
 };
 

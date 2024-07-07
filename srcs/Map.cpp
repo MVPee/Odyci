@@ -11,6 +11,9 @@ void Map::setAssets(void) {
 		for (int j = 0; j < this->_width; j++) {
 			this->_assets[i][j].hitbox = true;
 			this->_assets[i][j].c = this->_map[i][j];
+			this->_assets[i][j].sprite.scale(SCALE, SCALE);
+			this->_assets[i][j].sprite.setPosition(j * (SCALE * 8), i * (SCALE * 8));
+			this->_assets[i][j].kill = false;
 			switch (this->_assets[i][j].c)
 			{
 				case '0':
@@ -23,10 +26,13 @@ void Map::setAssets(void) {
 				case '2':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 8, 8, 8));
 					break;
+				case 'P':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/spike.png");
+					this->_assets[i][j].sprite.move(0, 3 * SCALE);
+					this->_assets[i][j].kill = true;
+					break;
 			}
 			this->_assets[i][j].sprite.setTexture(this->_assets[i][j].texture);
-			this->_assets[i][j].sprite.scale(SCALE, SCALE);
-			this->_assets[i][j].sprite.setPosition(j * (SCALE * 8), i * (SCALE * 8));
 		}
 	}
 }
@@ -107,6 +113,10 @@ sf::Sprite &Map::getSprite(int y, int x) {
 
 bool Map::getHitbox(int y, int x) {
 	return (this->_assets[y][x].hitbox);
+}
+
+bool Map::getKill(int y, int x) {
+	return (this->_assets[y][x].kill);
 }
 
 sf::IntRect Map::getSize(void) {
