@@ -13,9 +13,10 @@ Game::Game(int width, int height, std::string name) {
 	this->_key.rightPressed	= false;
 	this->_key.leftPressed = false;
 
+	this->_map = new Map("rsrcs/maps/sandbox.ody");
+
 	this->_window->setFramerateLimit(60);
 }
-
 
 /*
 ** -------------------------------- DESTRUCTOR --------------------------------
@@ -24,8 +25,8 @@ Game::Game(int width, int height, std::string name) {
 Game::~Game() {
 	delete this->_window;
 	delete this->_player;
+	delete this->_map;
 }
-
 
 /*
 ** --------------------------------- OVERLOAD ---------------------------------
@@ -84,21 +85,37 @@ void Game::event(void) {
 	}
 }
 
+bool Game::check_collision(int xSpeed, int ySpeed) {
+	sf::FloatRect nextPos = this->_player->getSprite().getGlobalBounds();
+	nextPos.left += xSpeed;
+	nextPos.top += ySpeed;
+
+	int height = this->_map->getSize().height;
+    int width = this->_map->getSize().width;
+
+	for (int i = 0; i < height; i++)
+		for (int j = 0; j < width; j++)
+			if (this->_map->getHitbox(i, j))
+				if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
+					return (false);
+	return (true);
+}
+
 /** 
  * @brief Update the window
 */
 void Game::update() {
-    if (this->_key.rightPressed) {
+    if (this->_key.rightPressed && check_collision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);
     }
-	if (this->_key.leftPressed) {
+	if (this->_key.leftPressed && check_collision(-SPEED, 0)) {
         this->_player->getSprite().move(-SPEED, 0);
     }
-	if (this->_key.upPressed) {
-        this->_player->getSprite().move(0, -SPEED);
-    }
-	if (this->_key.downPressed) {
+	if (this->_key.downPressed && check_collision(0, SPEED)) {
         this->_player->getSprite().move(0, SPEED);
+    }
+	if (this->_key.upPressed && check_collision(0, -SPEED)) {
+        this->_player->getSprite().move(0, -SPEED);
     }
 }
 
@@ -108,8 +125,12 @@ void Game::update() {
 void Game::display(void) {
 	this->_window->clear();
 	
+	for (int i = 0; i < this->_map->getSize().height; i++)
+		for (int j = 0; j < this->_map->getSize().width; j++)
+			this->_window->draw(this->_map->getSprite(i, j));
+
 	this->_window->draw(this->_player->getSprite());
-	
+
 	this->_window->display();
 }
 

@@ -5,7 +5,9 @@
 # define SCALE 4
 
 # include <iostream>
+# include <fstream>
 # include <string>
+# include <cstring>
 # include <SFML/Graphics.hpp>
 # include <SFML/System.hpp>
 # include <SFML/Window.hpp>

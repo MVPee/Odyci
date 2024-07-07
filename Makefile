@@ -4,11 +4,12 @@ OBJS_DIR = .objs
 
 SRCS = 	main.cpp \
 		srcs/Game.cpp \
-		srcs/Player.cpp
+		srcs/Player.cpp \
+		srcs/Map.cpp
 
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:%.cpp=%.o))
 CXX = g++
-CXXFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lglfw -lGL
+CXXFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lglfw -lGL #-g -fsanitize=address
 
 RED = \033[0;31m
 ORANGE=\033[0;33m

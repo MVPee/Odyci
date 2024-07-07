@@ -3,6 +3,7 @@
 
 # include "Macro.hpp"
 # include "Player.hpp"
+# include "Map.hpp"
 
 typedef struct s_key {
 	bool upPressed;
@@ -15,8 +16,11 @@ class Game {
 	private:
 		sf::RenderWindow	*_window;
 		sf::Event			_event;
-		Player				*_player;
 		t_key				_key;
+		Player				*_player;
+		Map					*_map;
+
+		bool check_collision(int x, int y);
 	public:
 
 		Game(int width, int height, std::string name);

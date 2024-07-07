@@ -4,10 +4,10 @@
 ** ------------------------------- CONSTRUCTOR --------------------------------
 */
 
-Player::Player(std::string rsrcs) {
-	this->_texture.loadFromFile(rsrcs);
+Player::Player(std::string srcs) {
+	this->_texture.loadFromFile(srcs);
 	this->_sprite.setTexture(this->_texture);
-	this->_sprite.setPosition(0, 0);
+	this->_sprite.setPosition(32, 64 + 16);
 	this->_sprite.setScale(SCALE, SCALE);
 }
 

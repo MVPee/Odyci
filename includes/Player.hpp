@@ -9,7 +9,7 @@ class Player
 		sf::Texture	_texture;
 		sf::Sprite	_sprite;
 	public:
-		Player(std::string rsrcs);
+		Player(std::string srcs);
 		~Player(void);
 
 		sf::Sprite& getSprite();
