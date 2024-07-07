@@ -6,7 +6,7 @@
 
 Game::Game(int width, int height, std::string name) {
 	this->_window = new sf::RenderWindow(sf::VideoMode(width, height), name, sf::Style::Default);
-	this->_player = new Player("rsrcs/assets/player.png");
+	this->_player = new Player("rsrcs/assets/player2.png");
 
 	this->_key.upPressed = false;
 	this->_key.downPressed = false;
@@ -16,7 +16,7 @@ Game::Game(int width, int height, std::string name) {
 
 	this->_map = new Map("rsrcs/maps/sandbox.ody");
 
-	this->_window->setFramerateLimit(60);
+	this->_window->setFramerateLimit(144);
 }
 
 /*
@@ -170,7 +170,7 @@ void Game::update(void) {
     // }
 
 	if (((this->_key.spacePressed && !check_collision(0, 1)) || this->_player->getJumping() > 0)) {
-		this->_player->jump(JUMP_SPEED, check_collision(0, -JUMP_SPEED));
+		this->_player->jump(JUMP_SPEED, check_collision(0, -JUMP_SPEED), this->_key.spacePressed);
 	}
 }
 

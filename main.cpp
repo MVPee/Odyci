@@ -2,7 +2,7 @@
 
 int main(void) {
 
-    Game game(800, 800, "Odyci");
+    Game game(1920, 1080, "Odyci");
 
     while (game.isRunning()) {
         game.event();

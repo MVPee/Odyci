@@ -5,7 +5,7 @@
 # define SPEED_FALLING 15
 # define JUMPING_HEIGHT 20
 # define JUMP_SPEED 20
-# define SCALE 8
+# define SCALE 6
 
 # include <iostream>
 # include <fstream>

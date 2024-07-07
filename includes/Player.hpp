@@ -15,7 +15,7 @@ class Player
 
 		int getJumping(void);
 		void setJumping(int i);
-		void jump(int jumpSpeed, bool topCollision);
+		void jump(int jumpSpeed, bool topCollision, bool spacePressed);
 		sf::Sprite& getSprite(void);
 };
 
