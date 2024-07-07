@@ -6,16 +6,18 @@
 class Player
 {
 	private:
-		sf::Texture	_texture;
+		sf::Texture	_texture[2];
 		sf::Sprite	_sprite;
 		int			_jumping;
+		int			_actualTexture;
 	public:
-		Player(std::string srcs);
+		Player();
 		~Player(void);
 
 		int getJumping(void);
 		void setJumping(int i);
-		void jump(int jumpSpeed, bool topCollision, bool spacePressed);
+		void jump(bool topCollision, bool spacePressed);
+		void switchTexture(int key);
 		sf::Sprite& getSprite(void);
 };
 

@@ -6,7 +6,7 @@
 
 Game::Game(int width, int height, std::string name) {
 	this->_window = new sf::RenderWindow(sf::VideoMode(width, height), name, sf::Style::Default);
-	this->_player = new Player("rsrcs/assets/player2.png");
+	this->_player = new Player();
 
 	this->_key.upPressed = false;
 	this->_key.downPressed = false;
@@ -126,27 +126,32 @@ void Game::updateCamera(void) {
     int moveX = (screenX - playerX)/10;
     int moveY = (screenY - playerY)/10;
 
-    this->_player->getSprite().move(moveX, moveY);
-    for (int i = 0; i < this->_map->getSize().height; i++) {
-        for (int j = 0; j < this->_map->getSize().width; j++) {
-            this->_map->getSprite(i, j).move(moveX, moveY);
-        }
-    }
+    // this->_player->getSprite().move(moveX, moveY);
+    // for (int i = 0; i < this->_map->getSize().height; i++) {
+    //     for (int j = 0; j < this->_map->getSize().width; j++) {
+    //         this->_map->getSprite(i, j).move(moveX, moveY);
+    //     }
+    // }
 }
 
 void Game::checkFalling(void) {
 	int temp;
+	static int count = 0;
 
 	temp = SPEED_FALLING;
 	if (!this->_player->getJumping()) {
-		if (check_collision(0, SPEED_FALLING))
-			this->_player->getSprite().move(0, SPEED_FALLING);
+		count++;
+		if (check_collision(0, SPEED_FALLING + count/2))
+			this->_player->getSprite().move(0, SPEED_FALLING + count/2);
 		else {
 			while (!check_collision(0, temp))
 				temp--;
 			this->_player->getSprite().move(0, temp);
+			count = 0;
 		}
 	}
+	else
+		count = 0;
 }
 
 /** 
@@ -158,9 +163,11 @@ void Game::update(void) {
 
     if (this->_key.rightPressed && check_collision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);
+		this->_player->switchTexture(1);
     }
 	if (this->_key.leftPressed && check_collision(-SPEED, 0)) {
         this->_player->getSprite().move(-SPEED, 0);
+		this->_player->switchTexture(0);
     }
 	// if (this->_key.downPressed && check_collision(0, SPEED)) {
     //     this->_player->getSprite().move(0, SPEED);
@@ -170,7 +177,7 @@ void Game::update(void) {
     // }
 
 	if (((this->_key.spacePressed && !check_collision(0, 1)) || this->_player->getJumping() > 0)) {
-		this->_player->jump(JUMP_SPEED, check_collision(0, -JUMP_SPEED), this->_key.spacePressed);
+		this->_player->jump(check_collision(0, -JUMP_SPEED), this->_key.spacePressed);
 	}
 }
 
