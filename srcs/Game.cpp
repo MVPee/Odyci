@@ -102,23 +102,23 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
     nextPos.left += xSpeed;
     nextPos.top += ySpeed;
 
+	sf::FloatRect belowPos = this->_player->getSprite().getGlobalBounds();
+    belowPos.top += ySpeed + 1;
+
     int height = this->_map->getSize().height;
     int width = this->_map->getSize().width;
 
-    for (int i = 0; i < height; i++)
-        for (int j = 0; j < width; j++)
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
             if (this->_map->getHitbox(i, j))
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
                     return false;
-
-    sf::FloatRect belowPos = this->_player->getSprite().getGlobalBounds();
-    belowPos.top += ySpeed + 1;
-
-    for (int i = 0; i < height; i++)
-        for (int j = 0; j < width; j++)
-            if (this->_map->getKill(i, j))
+			if (this->_map->getKill(i, j))
                 if (belowPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
                     this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
+		}
+	}
+            
 
     return true;
 }
