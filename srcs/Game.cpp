@@ -128,21 +128,21 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
  * @brief Update the camera in the middle of the screen
 */
 void Game::updateCamera(void) {
-//     int screenX = this->_window->getSize().x / 2;
-//     int screenY = this->_window->getSize().y / 2;
+    // int screenX = this->_window->getSize().x / 2;
+    // int screenY = this->_window->getSize().y / 2;
 
-//     int playerX = this->_player->getSprite().getPosition().x;
-//     int playerY = this->_player->getSprite().getPosition().y;
+    // int playerX = this->_player->getSprite().getPosition().x;
+    // int playerY = this->_player->getSprite().getPosition().y;
 
-//     int moveX = (screenX - playerX)/10;
-//     int moveY = (screenY - playerY)/10;
+    // int moveX = (screenX - playerX)/10;
+    // int moveY = (screenY - playerY)/10;
 
-//     this->_player->getSprite().move(moveX, moveY);
-//     for (int i = 0; i < this->_map->getSize().height; i++) {
-//         for (int j = 0; j < this->_map->getSize().width; j++) {
-//             this->_map->getSprite(i, j).move(moveX, moveY);
-//         }
-//     }
+    // this->_player->getSprite().move(moveX, moveY);
+    // for (int i = 0; i < this->_map->getSize().height; i++) {
+    //     for (int j = 0; j < this->_map->getSize().width; j++) {
+    //         this->_map->getSprite(i, j).move(moveX, moveY);
+    //     }
+    // }
 }
 
 void Game::checkFalling(void) {
@@ -150,10 +150,12 @@ void Game::checkFalling(void) {
 	static int count = 0;
 
 	temp = SPEED_FALLING;
-	if (!this->_player->getJumping()) {
+	if (!this->_player->getJumping() && check_collision(0, 1)) {
 		count++;
-		if (check_collision(0, SPEED_FALLING + count/2))
-			this->_player->getSprite().move(0, SPEED_FALLING + count/2);
+        if (count < 10)
+			this->_player->getSprite().move(0, 1);
+		else if (check_collision(0, SPEED_FALLING))
+			this->_player->getSprite().move(0, SPEED_FALLING);
 		else {
 			while (!check_collision(0, temp))
 				temp--;
