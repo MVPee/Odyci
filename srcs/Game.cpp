@@ -104,6 +104,9 @@ void Game::event(void) {
  * @return true if collision otherwise false
 */
 bool Game::check_collision(int xSpeed, int ySpeed) {
+    static int count = 0;
+    count++;
+
     sf::FloatRect nextPos = this->_player->getSprite().getGlobalBounds();
     nextPos.left += xSpeed;
     nextPos.top += ySpeed;
@@ -145,11 +148,17 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
             }
             if (this->_map->getEvent(i, j)) {
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
+                    float offsetX = 0.0;
+                    float offsetY = 0.0;
+                    if (count % 5) {
+                        offsetX = (std::rand() % 3 - 1) * 1.0f;
+                        offsetY = (std::rand() % 3 - 1) * 1.0f;
+                    }
                     this->_map->printText(i, j);
                     int textWidth = this->_map->getText().getGlobalBounds().width;
                     int textHeight = this->_map->getText().getGlobalBounds().height;
                     int playerCenter = this->_player->getSprite().getGlobalBounds().width/2;
-                    this->_map->getText().setPosition(this->_player->getSprite().getPosition().x - textWidth/2 + playerCenter, this->_player->getSprite().getPosition().y + -textHeight * 2);
+                    this->_map->getText().setPosition((this->_player->getSprite().getPosition().x - textWidth/2 + playerCenter) + offsetX, (this->_player->getSprite().getPosition().y + -textHeight * 2) + offsetY);
                 }
                 else
                     this->_map->printText(-1, -1);
