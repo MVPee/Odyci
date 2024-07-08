@@ -17,6 +17,12 @@ Game::Game(int width, int height, std::string name) {
 	this->_map = new Map("rsrcs/maps/sandbox.ody");
 
 	this->_window->setFramerateLimit(144);
+
+    this->_fps._font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
+    this->_fps._fpsText.setFont(this->_fps._font);
+    this->_fps._fpsText.setCharacterSize(24);
+    this->_fps._fpsText.setFillColor(sf::Color::White);
+    this->_fps._fpsText.setPosition(10, 10);
 }
 
 /*
@@ -167,12 +173,18 @@ void Game::checkFalling(void) {
 		count = 0;
 }
 
+void Game::updateFps(void) {
+    float fps = 1.f / this->_fps._fpsClock.restart().asSeconds();
+    this->_fps._fpsText.setString("FPS: " + std::to_string(static_cast<int>(fps)));
+}
+
 /** 
  * @brief Update the window
 */
 void Game::update(void) {
 	updateCamera();
 	checkFalling();
+    updateFps();
 
     if (this->_key.rightPressed && check_collision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);
@@ -200,11 +212,15 @@ void Game::update(void) {
 void Game::display(void) {
 	this->_window->clear();
 
+    this->_window->draw(this->_map->getBackground());
+
 	for (int i = 0; i < this->_map->getSize().height; i++)
 		for (int j = 0; j < this->_map->getSize().width; j++)
 			this->_window->draw(this->_map->getSprite(i, j));
 
 	this->_window->draw(this->_player->getSprite());
+
+    this->_window->draw(this->_fps._fpsText);
 
 	this->_window->display();
 }

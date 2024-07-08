@@ -5,6 +5,13 @@
 # include "Player.hpp"
 # include "Map.hpp"
 
+typedef struct s_fps {
+	sf::Clock _clock;
+	sf::Clock _fpsClock;
+	sf::Font _font;
+	sf::Text _fpsText;
+}	t_fps;
+
 typedef struct s_key {
 	bool upPressed;
 	bool downPressed;
@@ -18,13 +25,14 @@ class Game {
 		sf::RenderWindow	*_window;
 		sf::Event			_event;
 		t_key				_key;
+		t_fps				_fps;
 		Player				*_player;
 		Map					*_map;
 
 		bool check_collision(int x, int y);
 		void updateCamera(void);
 		void checkFalling(void);
-		void jumping(void);
+		void updateFps(void);
 	public:
 
 		Game(int width, int height, std::string name);

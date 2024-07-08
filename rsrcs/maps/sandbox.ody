@@ -1,22 +1,22 @@
-0011111000000000000011111111111111111111
-01    100000000000011                  1
-01    10001111000111                   1
-01    10111  11111                     1
-11    111                              1
-1                                      1
-1                                      1
-1                                      1
-1                                      1
-1                                      1
-1                                      1
-1                                      1
-1                                      1
-1                                      1
-1111111                                1
-0000001                                1
-0000001111                             1
-0000011         11      1111       11111
-000001          11       111           1
-0000011         11       11            1
-0000001PPPPPPPPP11PPPPPPP11PPPPPPPPPPPP1
-0000001111111111111111111111111111111111
+0IUUIUU0000000000000IUUIUUUIUUI000000000
+0U    U000000000000IU         UIUIUIU000
+0U    I000IUUU000IUU                U000
+0I    U0UIU  UIUUI                 IUI00
+UU    UIU                            IUU
+I                                      U
+U                                      I
+I                                      U
+U                                      I
+U                                      I
+I                                      U
+U                                      I
+U                                      U
+U                                      I
+U123323                                U
+046546I                                I
+000000UIU                              U
+00000IU         UU      111       13321I
+00000U          UU      U6I       I64560
+00000IU         UU      I0U       I00000
+000000IPPPPPPPPPUUPPPPPPU0IPPPPPPPU00000
+000000UUIUIUUIUIUUUIUIUUI0UIUUIUUII00000

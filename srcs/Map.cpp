@@ -17,14 +17,31 @@ void Map::setAssets(void) {
 			switch (this->_assets[i][j].c)
 			{
 				case '0':
-					this->_assets[i][j].hitbox = false;
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 16, 8, 8));
 					break;
 				case '1':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 0, 8, 8));
 					break;
 				case '2':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(8, 0, 8, 8));
+					break;
+				case '3':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(16, 0, 8, 8));
+					break;
+				case '4':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 8, 8, 8));
+					break;
+				case '5':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(8, 8, 8, 8));
+					break;
+				case '6':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(16, 8, 8, 8));
+					break;
+				case 'U':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(32, 0, 8, 8));
+					break;
+				case 'I':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(40, 0, 8, 8));
 					break;
 				case 'P':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/spike.png");
@@ -44,6 +61,8 @@ Map::Map(std::string srcs) {
 	if (setMap(srcs))
 		return ;
 	setAssets();
+	this->_backgroundTexture.loadFromFile("rsrcs/assets/background2.png");
+	this->_backgroundSprite.setTexture(_backgroundTexture);
 }
 
 /*
@@ -109,6 +128,10 @@ bool Map::setMap(std::string srcs) {
 
 sf::Sprite &Map::getSprite(int y, int x) {
 	return (this->_assets[y][x].sprite);
+}
+
+sf::Sprite &Map::getBackground() {
+	return (this->_backgroundSprite);
 }
 
 bool Map::getHitbox(int y, int x) {

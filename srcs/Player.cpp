@@ -13,7 +13,7 @@ Player::Player() {
 	this->_sprite.setPosition(128, 128 - 16);
 	this->_sprite.setScale(SCALE/3*2, SCALE/3*2);
 	this->_jumping = 0;
-	this->_actualTexture = 0;
+	this->_actualTexture = 1;
 }
 
 /*
