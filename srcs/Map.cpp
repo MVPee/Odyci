@@ -14,8 +14,10 @@ void Map::setAssets(void) {
 			this->_assets[i][j].sprite.scale(SCALE, SCALE);
 			this->_assets[i][j].sprite.setPosition(j * (SCALE * 8), i * (SCALE * 8));
 			this->_assets[i][j].kill = false;
+			this->_assets[i][j].event = NO_EVENT;
 			switch (this->_assets[i][j].c)
 			{
+				//DIRT
 				case '0':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 16, 8, 8));
 					break;
@@ -28,6 +30,7 @@ void Map::setAssets(void) {
 				case '3':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(16, 0, 8, 8));
 					break;
+				//UNDERDIRT
 				case '4':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 8, 8, 8));
 					break;
@@ -37,12 +40,22 @@ void Map::setAssets(void) {
 				case '6':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(16, 8, 8, 8));
 					break;
+
+				//STONE
 				case 'O':
-					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(32, 0, 8, 8));
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(24, 0, 8, 8));
 					break;
 				case 'I':
-					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(40, 0, 8, 8));
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(32, 0, 8, 8));
 					break;
+				case 'M':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(24, 8, 8, 8));
+					break;
+				case 'N':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(32, 8, 8, 8));
+					break;
+
+				//SPIKE
 				case 'D':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(72, 75, 8, 5));
 					this->_assets[i][j].sprite.move(0, 3 * SCALE);
@@ -61,6 +74,22 @@ void Map::setAssets(void) {
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(56, 72, 8, 5));
 					this->_assets[i][j].kill = true;
 					break;
+				
+				//FOUNDATION
+				case '8':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(40, 0, 8, 8));
+					break;
+				case '9':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(48, 0, 8, 8));
+					break;
+
+				//TREE
+				case 'A':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(72, 0, 8, 24));
+					this->_assets[i][j].sprite.move(0, 16 * -SCALE);
+					this->_assets[i][j].hitbox = false;
+					this->_assets[i][j].event = WELCOME;
+					break;
 			}
 			this->_assets[i][j].sprite.setTexture(this->_assets[i][j].texture);
 		}
@@ -76,6 +105,12 @@ Map::Map(std::string srcs) {
 	setAssets();
 	this->_backgroundTexture.loadFromFile("rsrcs/backgrounds/background2.png");
 	this->_backgroundSprite.setTexture(_backgroundTexture);
+
+	this->_text.font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
+	this->_text.text.setFont(this->_text.font);
+	this->_text.text.setCharacterSize(50);
+	this->_text.text.setFillColor(sf::Color::White);
+	this->_text.text.setPosition(20, 20);
 }
 
 /*
@@ -99,6 +134,22 @@ Map::~Map() {
 /*
 ** --------------------------------- METHODS ----------------------------------
 */
+
+void Map::printText(int i, int j) {
+    if (i == -1 && j == -1) {
+        this->_text.text.setString("");
+        return;
+    }
+
+    switch (this->_assets[i][j].event) {
+        case WELCOME:
+            this->_text.text.setString("This is a tree...");
+            break;
+        default:
+            this->_text.text.setString("");
+            break;
+    }
+}
 
 bool Map::setMap(std::string srcs) {
 	std::ifstream file;
@@ -155,11 +206,19 @@ bool Map::getKill(int y, int x) {
 	return (this->_assets[y][x].kill);
 }
 
+bool Map::getEvent(int y, int x) {
+	return (this->_assets[y][x].event);
+}
+
 sf::IntRect Map::getSize(void) {
 	sf::IntRect rect;
 	rect.height = this->_height;
 	rect.width = this->_width;
 	return (rect);
+}
+
+sf::Text &Map::getText() {
+	return (this->_text.text);
 }
 
 /* ************************************************************************** */

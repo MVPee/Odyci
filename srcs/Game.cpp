@@ -18,11 +18,11 @@ Game::Game(int width, int height, std::string name) {
 
 	this->_window->setFramerateLimit(144);
 
-    this->_fps._font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
-    this->_fps._fpsText.setFont(this->_fps._font);
-    this->_fps._fpsText.setCharacterSize(24);
-    this->_fps._fpsText.setFillColor(sf::Color::White);
-    this->_fps._fpsText.setPosition(10, 10);
+    this->_fps.font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
+    this->_fps.fpsText.setFont(this->_fps.font);
+    this->_fps.fpsText.setCharacterSize(24);
+    this->_fps.fpsText.setFillColor(sf::Color::White);
+    this->_fps.fpsText.setPosition(10, 10);
 }
 
 /*
@@ -115,29 +115,48 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
     belowPos.top += ySpeed + 1;
 
     sf::FloatRect leftPos = this->_player->getSprite().getGlobalBounds();
-    leftPos.left += xSpeed - 3;
+    leftPos.left += xSpeed - 1;
 
     sf::FloatRect rightPos = this->_player->getSprite().getGlobalBounds();
-    rightPos.left += xSpeed + 3;
+    rightPos.left += xSpeed + 1;
 
     int height = this->_map->getSize().height;
     int width = this->_map->getSize().width;
 
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
+            if (this->_map->getKill(i, j)) {
+                if (topPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
+                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
+                    return false;
+                }
+                if (belowPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
+                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
+                    return false;
+                }
+                if (leftPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
+                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
+                    return false;
+                }
+                if (rightPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
+                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
+                    return false;
+                }
+            }
+            if (this->_map->getEvent(i, j)) {
+                if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
+                    this->_map->printText(i, j);
+                    int textWidth = this->_map->getText().getGlobalBounds().width;
+                    int textHeight = this->_map->getText().getGlobalBounds().height;
+                    int playerCenter = this->_player->getSprite().getGlobalBounds().width/2;
+                    this->_map->getText().setPosition(this->_player->getSprite().getPosition().x - textWidth/2 + playerCenter, this->_player->getSprite().getPosition().y + -textHeight * 2);
+                }
+                else
+                    this->_map->printText(-1, -1);
+            }
             if (this->_map->getHitbox(i, j))
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
                     return false;
-            if (this->_map->getKill(i, j)) {
-                if (topPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
-                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
-                if (belowPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
-                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
-                if (leftPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
-                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
-                if (rightPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
-                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
-            }
         }
     }
 
@@ -191,8 +210,8 @@ void Game::checkFalling(void) {
 }
 
 void Game::updateFps(void) {
-    float fps = 1.f / this->_fps._fpsClock.restart().asSeconds();
-    this->_fps._fpsText.setString("FPS: " + std::to_string(static_cast<int>(fps)));
+    float fps = 1.f / this->_fps.fpsClock.restart().asSeconds();
+    this->_fps.fpsText.setString("FPS: " + std::to_string(static_cast<int>(fps)));
 }
 
 /** 
@@ -239,7 +258,9 @@ void Game::display(void) {
 
 	this->_window->draw(this->_player->getSprite());
 
-    this->_window->draw(this->_fps._fpsText);
+    this->_window->draw(this->_fps.fpsText);
+
+    this->_window->draw(this->_map->getText());
 
 	this->_window->display();
 }

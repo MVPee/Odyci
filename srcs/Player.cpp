@@ -6,13 +6,13 @@
 
 Player::Player() {
 	this->_pos.x = 128;
-	this->_pos.y = 128 - 16;
+	this->_pos.y = -64;
 	this->_texture[0].loadFromFile("rsrcs/assets/player2.png");
 	this->_texture[1].loadFromFile("rsrcs/assets/player1.png");
 	this->_texture[2].loadFromFile("rsrcs/assets/player4.png");
 	this->_texture[3].loadFromFile("rsrcs/assets/player3.png");
 	this->_sprite.setTexture(this->_texture[0]);
-	this->_sprite.setPosition(128, 128 - 16);
+	this->_sprite.setPosition(this->_pos.x, this->_pos.y);
 	this->_sprite.setScale(SCALE/3*2, SCALE/3*2);
 	this->_jumping = 0;
 	this->_actualTexture = 1;

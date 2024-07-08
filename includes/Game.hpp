@@ -6,10 +6,10 @@
 # include "Map.hpp"
 
 typedef struct s_fps {
-	sf::Clock _clock;
-	sf::Clock _fpsClock;
-	sf::Font _font;
-	sf::Text _fpsText;
+	sf::Clock	clock;
+	sf::Clock	fpsClock;
+	sf::Font	font;
+	sf::Text	fpsText;
 }	t_fps;
 
 typedef struct s_key {
