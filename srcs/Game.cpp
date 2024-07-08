@@ -126,6 +126,10 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
     int height = this->_map->getSize().height;
     int width = this->_map->getSize().width;
 
+    if (nextPos.left < 0 || nextPos.top < 0 || nextPos.left + nextPos.width > width * (SCALE * 8) || nextPos.top + nextPos.height > height * (SCALE * 8)) {
+        return false;
+    }
+
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             if (this->_map->getKill(i, j)) {
@@ -148,20 +152,10 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
             }
             if (this->_map->getEvent(i, j)) {
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
-                    float offsetX = 0.0;
-                    float offsetY = 0.0;
-                    if (count % 5) {
-                        offsetX = (std::rand() % 3 - 1) * 1.0f;
-                        offsetY = (std::rand() % 3 - 1) * 1.0f;
-                    }
-                    this->_map->printText(i, j);
-                    int textWidth = this->_map->getText().getGlobalBounds().width;
-                    int textHeight = this->_map->getText().getGlobalBounds().height;
-                    int playerCenter = this->_player->getSprite().getGlobalBounds().width/2;
-                    this->_map->getText().setPosition((this->_player->getSprite().getPosition().x - textWidth/2 + playerCenter) + offsetX, (this->_player->getSprite().getPosition().y + -textHeight * 2) + offsetY);
+                    this->_map->playEvent(this->_map->getEvent(i, j), count, this->_player->getSprite());
                 }
                 else
-                    this->_map->printText(-1, -1);
+                    this->_map->printText(NO_EVENT);
             }
             if (this->_map->getHitbox(i, j))
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))

@@ -41,14 +41,15 @@ class Map
 		Map(std::string srcs);
 		~Map();
 
-		void printText(int i, int j);
+		void printText(int event);
+		void playEvent(char c, int count, sf::Sprite &player);
 
 		sf::IntRect getSize(void);
 		sf::Sprite &getSprite(int y, int x);
 		sf::Sprite &getBackground();
 		bool getHitbox(int y, int x);
 		bool getKill(int y, int x);
-		bool getEvent(int y, int x);
+		int getEvent(int y, int x);
 		sf::Text &getText(void);
 
 };

@@ -90,6 +90,13 @@ void Map::setAssets(void) {
 					this->_assets[i][j].hitbox = false;
 					this->_assets[i][j].event = WELCOME;
 					break;
+
+				//SIGN
+				case 'P':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(56, 0, 16, 16));
+					this->_assets[i][j].sprite.move(4 * -SCALE, 8 * -SCALE);
+					this->_assets[i][j].hitbox = false;
+					break;
 			}
 			this->_assets[i][j].sprite.setTexture(this->_assets[i][j].texture);
 		}
@@ -135,13 +142,22 @@ Map::~Map() {
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void Map::printText(int i, int j) {
-    if (i == -1 && j == -1) {
-        this->_text.text.setString("");
-        return;
-    }
+void Map::playEvent(char c, int count, sf::Sprite &player) {
+	float offsetX = 0.0;
+	float offsetY = 0.0;
+	printText(c);
+	if (count % 5) {
+		offsetX = (std::rand() % 3 - 1) * 1.0f;
+		offsetY = (std::rand() % 3 - 1) * 1.0f;
+	}
+	int textWidth = this->_text.text.getGlobalBounds().width;
+	int textHeight = this->_text.text.getGlobalBounds().height;
+	int playerCenter = player.getGlobalBounds().width/2;
+	this->_text.text.setPosition((player.getPosition().x - textWidth/2 + playerCenter) + offsetX, (player.getPosition().y + -textHeight * 2) + offsetY);
+}
 
-    switch (this->_assets[i][j].event) {
+void Map::printText(int event) {
+    switch (event) {
         case WELCOME:
             this->_text.text.setString("This is a tree...");
             break;
@@ -206,7 +222,7 @@ bool Map::getKill(int y, int x) {
 	return (this->_assets[y][x].kill);
 }
 
-bool Map::getEvent(int y, int x) {
+int Map::getEvent(int y, int x) {
 	return (this->_assets[y][x].event);
 }
 

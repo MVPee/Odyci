@@ -6,7 +6,7 @@
 
 Player::Player() {
 	this->_pos.x = 128;
-	this->_pos.y = -64;
+	this->_pos.y = 0;
 	this->_texture[0].loadFromFile("rsrcs/assets/player2.png");
 	this->_texture[1].loadFromFile("rsrcs/assets/player1.png");
 	this->_texture[2].loadFromFile("rsrcs/assets/player4.png");
