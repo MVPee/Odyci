@@ -37,15 +37,28 @@ void Map::setAssets(void) {
 				case '6':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(16, 8, 8, 8));
 					break;
-				case 'U':
+				case 'O':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(32, 0, 8, 8));
 					break;
 				case 'I':
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(40, 0, 8, 8));
 					break;
-				case 'P':
-					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/spike.png");
+				case 'D':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(72, 75, 8, 5));
 					this->_assets[i][j].sprite.move(0, 3 * SCALE);
+					this->_assets[i][j].kill = true;
+					break;
+				case 'R':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(64, 72, 5, 8));
+					this->_assets[i][j].kill = true;
+					break;
+				case 'L':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(51, 72, 5, 8));
+					this->_assets[i][j].sprite.move(3 * SCALE, 0);
+					this->_assets[i][j].kill = true;
+					break;
+				case 'U':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(56, 72, 8, 5));
 					this->_assets[i][j].kill = true;
 					break;
 			}

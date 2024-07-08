@@ -108,8 +108,17 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
     nextPos.left += xSpeed;
     nextPos.top += ySpeed;
 
-	sf::FloatRect belowPos = this->_player->getSprite().getGlobalBounds();
+    sf::FloatRect topPos = this->_player->getSprite().getGlobalBounds();
+    topPos.top += ySpeed - 1;
+
+    sf::FloatRect belowPos = this->_player->getSprite().getGlobalBounds();
     belowPos.top += ySpeed + 1;
+
+    sf::FloatRect leftPos = this->_player->getSprite().getGlobalBounds();
+    leftPos.left += xSpeed - 3;
+
+    sf::FloatRect rightPos = this->_player->getSprite().getGlobalBounds();
+    rightPos.left += xSpeed + 3;
 
     int height = this->_map->getSize().height;
     int width = this->_map->getSize().width;
@@ -119,15 +128,23 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
             if (this->_map->getHitbox(i, j))
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
                     return false;
-			if (this->_map->getKill(i, j))
+            if (this->_map->getKill(i, j)) {
+                if (topPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
+                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
                 if (belowPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
                     this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
-		}
-	}
-            
+                if (leftPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
+                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
+                if (rightPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
+                    this->_player->getSprite().setPosition(this->_player->getInitialPosition().x, this->_player->getInitialPosition().y);
+            }
+        }
+    }
 
     return true;
 }
+
+
 
 
 /** 
