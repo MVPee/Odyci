@@ -9,6 +9,8 @@ Player::Player() {
 	this->_pos.y = 128 - 16;
 	this->_texture[0].loadFromFile("rsrcs/assets/player2.png");
 	this->_texture[1].loadFromFile("rsrcs/assets/player1.png");
+	this->_texture[2].loadFromFile("rsrcs/assets/player4.png");
+	this->_texture[3].loadFromFile("rsrcs/assets/player3.png");
 	this->_sprite.setTexture(this->_texture[0]);
 	this->_sprite.setPosition(128, 128 - 16);
 	this->_sprite.setScale(SCALE/3*2, SCALE/3*2);
@@ -31,15 +33,34 @@ Player::~Player(void) {
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void Player::switchTexture(int key) {
-	if (key == 0 && this->_actualTexture != 0) {
-		this->_sprite.setTexture(this->_texture[1]);
-		this->_actualTexture = 0;
-	}
-	else if (key == 1 && this->_actualTexture != 1) {
-		this->_sprite.setTexture(this->_texture[0]);
-		this->_actualTexture = 1;
-	}
+void Player::rotate(char c) {
+    if (c == 'L') {
+        if (this->_actualTexture != 0 && this->_actualTexture != 3) {
+            this->_actualTexture = 0;
+            actualizeTexture();
+        }
+    } 
+	else {
+        if (this->_actualTexture != 1 && this->_actualTexture != 2) {
+            this->_actualTexture = 1;
+            actualizeTexture();
+        }
+    }
+}
+
+void Player::actualizeTexture(void) {
+    if (this->_actualTexture == 0 || this->_actualTexture == 2) { // Gauche
+        if (this->_flying)
+            this->_sprite.setTexture(this->_texture[3]); // Texture pour voler à gauche
+        else
+            this->_sprite.setTexture(this->_texture[1]); // Texture pour marcher à gauche
+    }
+	else if (this->_actualTexture == 1 || this->_actualTexture == 3) { // Droite
+        if (this->_flying)
+            this->_sprite.setTexture(this->_texture[2]); // Texture pour voler à droite
+        else
+            this->_sprite.setTexture(this->_texture[0]); // Texture pour marcher à droite
+    }
 }
 
 /*
@@ -85,6 +106,17 @@ void Player::jump(bool topCollision, bool spacePressed) {
 	}
 	if (this->_jumping == 1)
 		this->_lastJump.restart();
+}
+
+void Player::setFlying(bool flying) {
+    if (this->_flying != flying) {
+        this->_flying = flying;
+        actualizeTexture();
+    }
+}
+
+bool Player::isFlying(void) {
+	return (this->_flying);
 }
 
 /* ************************************************************************** */

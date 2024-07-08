@@ -61,7 +61,7 @@ Map::Map(std::string srcs) {
 	if (setMap(srcs))
 		return ;
 	setAssets();
-	this->_backgroundTexture.loadFromFile("rsrcs/assets/background2.png");
+	this->_backgroundTexture.loadFromFile("rsrcs/backgrounds/background2.png");
 	this->_backgroundSprite.setTexture(_backgroundTexture);
 }
 

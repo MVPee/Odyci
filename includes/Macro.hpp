@@ -4,6 +4,8 @@
 # define SPEED 8
 # define SPEED_FALLING 10
 
+# define FLY_FALL_SPEED 4
+
 # define JUMPING_HEIGHT 16
 # define JUMP_SPEED 12
 # define TIME_BEETWEEN_JUMP 0.4

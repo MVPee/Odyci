@@ -188,22 +188,24 @@ void Game::update(void) {
 
     if (this->_key.rightPressed && check_collision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);
-		this->_player->switchTexture(1);
+		this->_player->rotate('R');
     }
 	if (this->_key.leftPressed && check_collision(-SPEED, 0)) {
         this->_player->getSprite().move(-SPEED, 0);
-		this->_player->switchTexture(0);
+		this->_player->rotate('L');
     }
 	// if (this->_key.downPressed && check_collision(0, SPEED)) {
     //     this->_player->getSprite().move(0, SPEED);
     // }
-	// if (this->_key.upPressed && check_collision(0, -SPEED)) {
-    //     this->_player->getSprite().move(0, -SPEED);
-    // }
 
-	if (((this->_key.spacePressed && !check_collision(0, 1)) || this->_player->getJumping() > 0)) {
-		this->_player->jump(check_collision(0, -JUMP_SPEED), this->_key.spacePressed);
-	}
+    this->_player->setFlying(false);
+    if (((this->_key.spacePressed && !check_collision(0, 1)) || this->_player->getJumping() > 0)) {
+        this->_player->jump(check_collision(0, -JUMP_SPEED), this->_key.spacePressed);
+    } 
+    else if (this->_key.spacePressed && check_collision(0, -FLY_FALL_SPEED) && check_collision(0, 1)) {
+        this->_player->setFlying(true);
+        this->_player->getSprite().move(0, -FLY_FALL_SPEED);
+    }
 }
 
 /** 
