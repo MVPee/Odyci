@@ -88,7 +88,7 @@ void Map::setAssets(void) {
 					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(72, 0, 8, 24));
 					this->_assets[i][j].sprite.move(0, 16 * -SCALE);
 					this->_assets[i][j].hitbox = false;
-					this->_assets[i][j].event = WELCOME;
+					this->_assets[i][j].event = TREE;
 					break;
 
 				//SIGN
@@ -97,6 +97,11 @@ void Map::setAssets(void) {
 					this->_assets[i][j].sprite.move(4 * -SCALE, 8 * -SCALE);
 					this->_assets[i][j].hitbox = false;
 					break;
+
+				case 'E':
+					this->_assets[i][j].texture.loadFromFile("rsrcs/assets/image.png", sf::IntRect(0, 72, 8, 8));
+					this->_assets[i][j].hitbox = false;
+					this->_assets[i][j].event = NO_EVENT;
 			}
 			this->_assets[i][j].sprite.setTexture(this->_assets[i][j].texture);
 		}
@@ -118,6 +123,9 @@ Map::Map(std::string srcs) {
 	this->_text.text.setCharacterSize(50);
 	this->_text.text.setFillColor(sf::Color::White);
 	this->_text.text.setPosition(20, 20);
+
+	this->_gravityClock.restart();
+	this->_gravity = true;
 }
 
 /*
@@ -142,29 +150,29 @@ Map::~Map() {
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void Map::playEvent(char c, int count, sf::Sprite &player) {
+void Map::playEvent(int event, int count, Player &player) {
 	float offsetX = 0.0;
 	float offsetY = 0.0;
-	printText(c);
 	if (count % 5) {
 		offsetX = (std::rand() % 3 - 1) * 1.0f;
 		offsetY = (std::rand() % 3 - 1) * 1.0f;
 	}
-	int textWidth = this->_text.text.getGlobalBounds().width;
-	int textHeight = this->_text.text.getGlobalBounds().height;
-	int playerCenter = player.getGlobalBounds().width/2;
-	this->_text.text.setPosition((player.getPosition().x - textWidth/2 + playerCenter) + offsetX, (player.getPosition().y + -textHeight * 2) + offsetY);
-}
+	int textWidth;
+	int textHeight;
+	int playerCenter = player.getSprite().getGlobalBounds().width/2;
 
-void Map::printText(int event) {
     switch (event) {
-        case WELCOME:
+        case TREE:
             this->_text.text.setString("This is a tree...");
-            break;
-        default:
-            this->_text.text.setString("");
+			textWidth = this->_text.text.getGlobalBounds().width;
+			textHeight = this->_text.text.getGlobalBounds().height;
+			this->_text.text.setPosition((player.getSprite().getPosition().x - textWidth/2 + playerCenter) + offsetX, (player.getSprite().getPosition().y + -textHeight * 2) + offsetY);
             break;
     }
+}
+
+void Map::resetText(void) {
+	this->_text.text.setString("");
 }
 
 bool Map::setMap(std::string srcs) {
@@ -235,6 +243,10 @@ sf::IntRect Map::getSize(void) {
 
 sf::Text &Map::getText() {
 	return (this->_text.text);
+}
+
+bool Map::getGravity(void) {
+	return (this->_gravity);
 }
 
 /* ************************************************************************** */

@@ -2,11 +2,13 @@
 # define MAP_HPP
 
 # include "Macro.hpp"
+# include "Player.hpp"
 
 # define NO_EVENT 0
 # define NEXT_MAP 1
 # define PREVIOUS_MAP 2
-# define WELCOME 3
+# define TREE 3
+# define GRAVITY 4
 
 typedef struct s_text {
 	sf::Font	font;
@@ -35,14 +37,16 @@ class Map
 		sf::Texture	_backgroundTexture;
 		sf::Sprite	_backgroundSprite;
 
+		bool		_gravity;
+		sf::Clock	_gravityClock;
 		bool setMap(std::string srcs);
-		void setAssets();
+		void setAssets(void);
 	public:
 		Map(std::string srcs);
 		~Map();
 
-		void printText(int event);
-		void playEvent(char c, int count, sf::Sprite &player);
+		void resetText(void);
+		void playEvent(int event, int count, Player &player);
 
 		sf::IntRect getSize(void);
 		sf::Sprite &getSprite(int y, int x);
@@ -50,8 +54,8 @@ class Map
 		bool getHitbox(int y, int x);
 		bool getKill(int y, int x);
 		int getEvent(int y, int x);
+		bool getGravity(void);
 		sf::Text &getText(void);
-
 };
 
 #endif /* ************************************************************* MAP_H */

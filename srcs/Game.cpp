@@ -152,10 +152,10 @@ bool Game::check_collision(int xSpeed, int ySpeed) {
             }
             if (this->_map->getEvent(i, j)) {
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
-                    this->_map->playEvent(this->_map->getEvent(i, j), count, this->_player->getSprite());
+                    this->_map->playEvent(this->_map->getEvent(i, j), count, *this->_player);
                 }
                 else
-                    this->_map->printText(NO_EVENT);
+                    this->_map->resetText();
             }
             if (this->_map->getHitbox(i, j))
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
@@ -194,22 +194,42 @@ void Game::checkFalling(void) {
 	int temp;
 	static int count = 0;
 
-	temp = SPEED_FALLING;
-	if (!this->_player->getJumping() && check_collision(0, 1)) {
-		count++;
-        if (count < 10)
-			this->_player->getSprite().move(0, 1);
-		else if (check_collision(0, SPEED_FALLING))
-			this->_player->getSprite().move(0, SPEED_FALLING);
-		else {
-			while (!check_collision(0, temp))
-				temp--;
-			this->_player->getSprite().move(0, temp);
-			count = 0;
-		}
-	}
-	else
-		count = 0;
+    if (this->_map->getGravity()) {
+        temp = SPEED_FALLING;
+        if (!this->_player->getJumping() && check_collision(0, 1)) {
+            count++;
+            if (count < 10)
+                this->_player->getSprite().move(0, 1);
+            else if (check_collision(0, SPEED_FALLING))
+                this->_player->getSprite().move(0, SPEED_FALLING);
+            else {
+                while (!check_collision(0, temp))
+                    temp--;
+                this->_player->getSprite().move(0, temp);
+                count = 0;
+            }
+        }
+        else
+            count = 0;
+    }
+    else {
+        temp = -SPEED_FALLING;
+        if (!this->_player->getJumping() && check_collision(0, -1)) {
+            count++;
+            if (count < 10)
+                this->_player->getSprite().move(0, -1);
+            else if (check_collision(0, -SPEED_FALLING))
+                this->_player->getSprite().move(0, -SPEED_FALLING);
+            else {
+                while (!check_collision(0, temp))
+                    temp++;
+                this->_player->getSprite().move(0, temp);
+                count = 0;
+            }
+        }
+        else
+            count = 0;
+    }
 }
 
 void Game::updateFps(void) {

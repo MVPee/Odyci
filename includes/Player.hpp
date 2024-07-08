@@ -13,6 +13,7 @@ class Player
 		bool			_flying;
 		sf::Clock		_lastJump;
 		int				_actualTexture;
+		bool			_rotated;
 	public:
 		Player();
 		~Player(void);
@@ -22,6 +23,7 @@ class Player
 		void setJumping(int i);
 
 		void setFlying(bool flying);
+		void setRotated(bool rotated);
 		bool isFlying(void);
 
 		void jump(bool topCollision, bool spacePressed);
