@@ -4,9 +4,9 @@
 # define SPEED 12
 # define SPEED_FALLING 8
 
-# define JUMPING_HEIGHT 20
+# define JUMPING_HEIGHT 16
 # define JUMP_SPEED 12
-# define TIME_BEETWEEN_JUMP 0.4
+# define TIME_BEETWEEN_JUMP 0.45
 # define SCALE 6
 
 # include <iostream>
