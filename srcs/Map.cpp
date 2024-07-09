@@ -198,10 +198,8 @@ bool Map::setMap(std::string srcs, Player &player, char c) {
 		playerY = std::stoi(line);
 		std::getline(file, line);
 		std::getline(file, line);
-		std::getline(file, line);
 	}
 	else if (c == 'P') {
-		std::getline(file, line);
 		std::getline(file, line);
 		std::getline(file, line);
 		std::getline(file, line);
