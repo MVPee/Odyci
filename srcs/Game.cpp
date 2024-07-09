@@ -5,7 +5,7 @@
 */
 
 Game::Game(int width, int height, std::string name) {
-	this->_window = new sf::RenderWindow(sf::VideoMode(width, height), name, sf::Style::Fullscreen);
+	this->_window = new sf::RenderWindow(sf::VideoMode(width, height), name, sf::Style::Default);
 	this->_player = new Player();
 
 	this->_key.WPressed = false;
