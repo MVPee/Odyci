@@ -239,8 +239,13 @@ void Game::update(void) {
 		this->_player->rotate('L');
     }
 
-	// if (this->_key.downPressed) {
-    // }
+	if (this->_key.downPressed) {
+        this->_map->switchMap(
+                                "rsrcs/maps/sandbox.ody", \
+                                "rsrcs/backgrounds/background2.png", \
+                                *this->_player
+                            );
+    }
 
     this->_player->setFlying(false);
     if (((this->_key.spacePressed && !checkCollision(0, 1)) || this->_player->getJumping() > 0)) {

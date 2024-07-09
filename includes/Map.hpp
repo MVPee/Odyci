@@ -43,6 +43,8 @@ class Map
 		Map(std::string srcs, std::string background, Player &player);
 		~Map();
 
+		void switchMap(std::string srcs, std::string background, Player &player);
+
 		void resetText(void);
 		void playEvent(int event, int count, Player &player);
 

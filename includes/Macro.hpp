@@ -16,6 +16,7 @@
 # include <string>
 # include <cstring>
 # include <cstdlib>
+# include <unordered_map>
 # include <SFML/Graphics.hpp>
 # include <SFML/System.hpp>
 # include <SFML/Window.hpp>
