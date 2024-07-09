@@ -17,7 +17,7 @@ Game::Game(int width, int height, std::string name) {
     this->_key.leftPressed = false;
 
 	this->_map = new Map(
-                            "rsrcs/maps/sandbox.ody", \
+                            "rsrcs/maps/map1.ody", \
                             *this->_player
                         );
     
@@ -144,9 +144,9 @@ bool Game::checkCollision(int xSpeed, int ySpeed) {
     int height = this->_map->getSize().height;
     int width = this->_map->getSize().width;
 
-    if (nextPos.left < 0 || nextPos.top < 0 || nextPos.left + nextPos.width > width * (SCALE * 8) || nextPos.top + nextPos.height > height * (SCALE * 8)) {
-        return false;
-    }
+    // if (nextPos.left < 0 || nextPos.top < 0 || nextPos.left + nextPos.width > width * (SCALE * 8) || nextPos.top + nextPos.height > height * (SCALE * 8)) {
+    //     return false;
+    // }
 
     bool isEventTriggered = false;
 
@@ -211,6 +211,7 @@ void Game::updateCamera(void) {
     //         this->_map->getSprite(i, j).move(moveX, moveY);
     //     }
     // }
+    //std::cout << "x " << this->_player->getSprite().getPosition().x << " y " << this->_player->getSprite().getPosition().y << std::endl;
 }
 
 void Game::checkFalling(void) {

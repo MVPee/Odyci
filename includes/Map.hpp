@@ -40,13 +40,15 @@ class Map
 		std::string	_nextMap;
 		std::string _previousMap;
 
-		bool setMap(std::string srcs, Player &player);
+		sf::Clock	_switchMapClock;
+
+		bool setMap(std::string srcs, Player &player, char c);
 		void setAssets(void);
 	public:
 		Map(std::string srcs, Player &player);
 		~Map();
 
-		void switchMap(std::string src, Player &player);
+		void switchMap(std::string src, Player &player, char c);
 
 		void nextMap(Player &player);
 		void previousMap(Player &player);

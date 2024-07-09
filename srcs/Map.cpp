@@ -25,7 +25,8 @@ void Map::setAssets(void) {
         {'9', sf::IntRect(48, 0, 8, 8)},
         {'A', sf::IntRect(72, 0, 8, 24)},
         {'P', sf::IntRect(56, 0, 16, 16)},
-        {'|', sf::IntRect(0, 72, 8, 8)}
+        {'|', sf::IntRect(0, 72, 8, 8)},
+		{'\\', sf::IntRect(0, 72, 8, 8)}
     };
 
     for (int i = 0; i < this->_height; i++) {
@@ -33,7 +34,7 @@ void Map::setAssets(void) {
             this->_assets[i][j].hitbox = true;
             this->_assets[i][j].c = this->_map[i][j];
             this->_assets[i][j].sprite.setScale(SCALE, SCALE);
-            this->_assets[i][j].sprite.setPosition(j * (SCALE * 8), i * (SCALE * 8));
+            this->_assets[i][j].sprite.setPosition((j - 3) * (SCALE * 8), (i - 3) * (SCALE * 8));
             this->_assets[i][j].kill = false;
             this->_assets[i][j].event = NO_EVENT;
 
@@ -66,8 +67,11 @@ void Map::setAssets(void) {
                     this->_assets[i][j].hitbox = false;
                     break;
                 case '|':
-                    this->_assets[i][j].hitbox = false;
                     this->_assets[i][j].event = NEXT_MAP;
+					break;
+				case '\\':
+                    this->_assets[i][j].event = PREVIOUS_MAP;
+					break;
             }
             this->_assets[i][j].sprite.setTexture(this->_assets[i][j].texture);
         }
@@ -78,7 +82,8 @@ Map::Map(std::string srcs, Player &player) {
     this->_width = 0;
     this->_height = 0;
 
-    if (!setMap(srcs, player)) {
+	this->_switchMapClock.restart();
+    if (!setMap(srcs, player, 'N')) {
         setAssets();
         this->_backgroundSprite.setTexture(_backgroundTexture);
 
@@ -114,7 +119,8 @@ Map::~Map() {
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void Map::switchMap(std::string srcs, Player &player) {
+void Map::switchMap(std::string srcs, Player &player, char c) {
+	this->_switchMapClock.restart();
     if (this->_map) {
         for (int i = 0; i < this->_height; i++)
             delete[] this->_map[i];
@@ -127,7 +133,7 @@ void Map::switchMap(std::string srcs, Player &player) {
         delete[] this->_assets;
     }
 
-    if (!setMap(srcs, player)) {
+    if (!setMap(srcs, player, c)) {
         setAssets();
         this->_backgroundSprite.setTexture(_backgroundTexture);
         player.getSprite().setPosition(player.getPos().x, player.getPos().y);
@@ -135,11 +141,13 @@ void Map::switchMap(std::string srcs, Player &player) {
 }
 
 void Map::nextMap(Player &player) {
-	switchMap(this->_nextMap, player);
+	if (this->_switchMapClock.getElapsedTime().asSeconds() > 0.5)
+		switchMap(this->_nextMap, player, 'N');
 }
 
 void Map::previousMap(Player &player) {
-	switchMap(this->_previousMap, player);
+	if (this->_switchMapClock.getElapsedTime().asSeconds() > 0.5)
+		switchMap(this->_previousMap, player, 'P');
 }
 
 void Map::playEvent(int event, int count, Player &player) {
@@ -163,6 +171,9 @@ void Map::playEvent(int event, int count, Player &player) {
 		case NEXT_MAP:
             nextMap(player);
             break;
+		case PREVIOUS_MAP:
+            previousMap(player);
+            break;
     }
 }
 
@@ -170,21 +181,40 @@ void Map::resetText(void) {
     this->_text.text.setString("");
 }
 
-bool Map::setMap(std::string srcs, Player &player) {
+bool Map::setMap(std::string srcs, Player &player, char c) {
     std::ifstream file(srcs);
     std::string line;
+
+	int playerY;
+	int playerX;
 
     if (!file.is_open())
         return true;
 
-	std::getline(file, line);
-    int playerX = std::stoi(line);
-	std::getline(file, line);
-    int playerY = std::stoi(line);
-	std::getline(file, line);
-    this->_nextMap = line;
+	if (c == 'N') {
+		std::getline(file, line);
+		playerX = std::stoi(line);
+		std::getline(file, line);
+		playerY = std::stoi(line);
+		std::getline(file, line);
+		std::getline(file, line);
+		std::getline(file, line);
+	}
+	else if (c == 'P') {
+		std::getline(file, line);
+		std::getline(file, line);
+		std::getline(file, line);
+		std::getline(file, line);
+		std::cout << line << std::endl;
+		playerX = std::stoi(line);
+		std::getline(file, line);
+		std::cout << line << std::endl;
+		playerY = std::stoi(line);
+	}
 	std::getline(file, line);
     this->_previousMap = line;
+	std::getline(file, line);
+    this->_nextMap = line;
 	std::getline(file, line);
 	this->_backgroundTexture.loadFromFile(line);
 	std::getline(file, line);

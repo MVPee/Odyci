@@ -1,28 +1,36 @@
 128
+-96
+128
 0
 rsrcs/maps/map1.ody
 rsrcs/maps/map1.ody
 rsrcs/backgrounds/background2.png
 
-09   9ON000000000000IOO9  988OIMMNNN0000
-09   9ON00000000MNNIO  9  9  OIOIOIO0000
-09   9IN00IOOOMNNIOO   9  9         ON00
-09   9OMOIO  OIOOI     9  9        IOIMM
-O9   9OIO     UUU      9  9          IOO
-I8   888              88888            O
-O                                      I
-I                                      O
-O                                      I
-O                                      I
-IR                                    LO
-OR                                    LI
-OR                                    LO
-OR                                    LI
-O123323                                O
-I46546I P                              I
-000000OIO                A             O
-0000MIO         OO      111       8   8I
-0000MO          OO      OMI       9   9O
-0000NIO         OO      IMO       9   90
-00000MIDDDDDDDDDOODDDDDDONIDDDDDDD9   90
-00000NOOIOIOOIOIOOOIOIOOI0OIOOIOOI9 | 90
+   8888880000000000000000000000000000000000
+   9    90000000000000000000000000000000000
+   9    90000000000000000000000000000000000
+00009   9ON000000000000IOO9  988OIMMNNN0000000
+00009   9ON00000000MNNIO  9  9  OIOIOIO0000000
+00009   9IN00IOOOMNNIOO   9  9         ON00000
+00009   9OMOIO  OIOOI     9  9        IOIMM000
+000O9   9OIO     UUU      9  9          IOO000
+000I8   888              88888            O000
+000O                                      I000
+000I                                      O000
+000O                                      I000
+000O                                      I000
+000IR                                    LO000
+000OR                                    LI000
+000OR                                    LO000
+000OR                                    LI000
+000O123323                                O000
+000I46546I P                              I000
+000000000OIO                A             O000
+0000000MIO         OO      111       8   8I000
+0000000MO          OO      OMI       9   9O000
+0000000NIO         OO      IMO       9   90000
+00000000MIDDDDDDDDDOODDDDDDONIDDDDDDD9   90000
+00000000NOOIOIOOIOIOOOIOIOOI0OIOOIOOI9   90000
+   00000000000000000000000000000000009   90
+   00000000000000000000000000000000009   90
+   00000000000000000000000000000000008|||80
