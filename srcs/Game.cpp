@@ -8,15 +8,16 @@ Game::Game(int width, int height, std::string name) {
 	this->_window = new sf::RenderWindow(sf::VideoMode(width, height), name, sf::Style::Default);
 	this->_player = new Player();
 
-	this->_key.upPressed = false;
-	this->_key.downPressed = false;
-	this->_key.rightPressed	= false;
-	this->_key.leftPressed = false;
+	this->_key.WPressed = false;
+	this->_key.SPressed = false;
+	this->_key.DPressed	= false;
+	this->_key.APressed = false;
 	this->_key.spacePressed = false;
+    this->_key.rightPressed = false;
+    this->_key.leftPressed = false;
 
 	this->_map = new Map(
                             "rsrcs/maps/sandbox.ody", \
-                            "rsrcs/backgrounds/background2.png", \
                             *this->_player
                         );
     
@@ -65,38 +66,50 @@ void Game::event(void) {
                     this->_window->close();
                     break;
                 case sf::Keyboard::W:
-                    this->_key.upPressed = true;
+                    this->_key.WPressed = true;
                     break;
                 case sf::Keyboard::S:
-                    this->_key.downPressed = true;
+                    this->_key.SPressed = true;
                     break;
                 case sf::Keyboard::D:
-                    this->_key.rightPressed = true;
+                    this->_key.DPressed = true;
                     break;
                 case sf::Keyboard::A:
-                    this->_key.leftPressed = true;
+                    this->_key.APressed = true;
                     break;
                 case sf::Keyboard::Space:
                     this->_key.spacePressed = true;
+                    break;
+                case sf::Keyboard::Right:
+                    this->_key.rightPressed = true;
+                    break;
+                case sf::Keyboard::Left:
+                    this->_key.leftPressed = true;
                     break;
             }
         }
         if (this->_event.type == sf::Event::KeyReleased) {
             switch (this->_event.key.code) {
                 case sf::Keyboard::W:
-                    this->_key.upPressed = false;
+                    this->_key.WPressed = false;
                     break;
                 case sf::Keyboard::S:
-                    this->_key.downPressed = false;
+                    this->_key.SPressed = false;
                     break;
                 case sf::Keyboard::D:
-                    this->_key.rightPressed = false;
+                    this->_key.DPressed = false;
                     break;
                 case sf::Keyboard::A:
-                    this->_key.leftPressed = false;
+                    this->_key.APressed = false;
                     break;
                 case sf::Keyboard::Space:
                     this->_key.spacePressed = false;
+                    break;
+                case sf::Keyboard::Right:
+                    this->_key.rightPressed = false;
+                    break;
+                case sf::Keyboard::Left:
+                    this->_key.leftPressed = false;
                     break;
             }
         }
@@ -135,6 +148,8 @@ bool Game::checkCollision(int xSpeed, int ySpeed) {
         return false;
     }
 
+    bool isEventTriggered = false;
+
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             if (this->_map->getKill(i, j)) {
@@ -158,14 +173,17 @@ bool Game::checkCollision(int xSpeed, int ySpeed) {
             if (this->_map->getEvent(i, j)) {
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds())) {
                     this->_map->playEvent(this->_map->getEvent(i, j), count, *this->_player);
+                    isEventTriggered = true;
                 }
-                else
-                    this->_map->resetText();
             }
             if (this->_map->getHitbox(i, j))
                 if (nextPos.intersects(this->_map->getSprite(i, j).getGlobalBounds()))
                     return false;
         }
+    }
+
+    if (!isEventTriggered) {
+        this->_map->resetText();
     }
 
     return true;
@@ -230,21 +248,13 @@ void Game::update(void) {
 	checkFalling();
     updateFps();
 
-    if (this->_key.rightPressed && checkCollision(SPEED, 0)) {
+    if (this->_key.DPressed && checkCollision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);
 		this->_player->rotate('R');
     }
-	if (this->_key.leftPressed && checkCollision(-SPEED, 0)) {
+	if (this->_key.APressed && checkCollision(-SPEED, 0)) {
         this->_player->getSprite().move(-SPEED, 0);
 		this->_player->rotate('L');
-    }
-
-	if (this->_key.downPressed) {
-        this->_map->switchMap(
-                                "rsrcs/maps/sandbox.ody", \
-                                "rsrcs/backgrounds/background2.png", \
-                                *this->_player
-                            );
     }
 
     this->_player->setFlying(false);
@@ -254,6 +264,13 @@ void Game::update(void) {
     else if (this->_key.spacePressed && checkCollision(0, -FLY_FALL_SPEED) && checkCollision(0, 1)) {
         this->_player->setFlying(true);
         this->_player->getSprite().move(0, -FLY_FALL_SPEED);
+    }
+
+    if (this->_key.rightPressed && checkCollision(-SPEED, 0)) {
+        this->_map->nextMap(*this->_player);
+    }
+    if (this->_key.leftPressed && checkCollision(-SPEED, 0)) {
+        this->_map->previousMap(*this->_player);
     }
 }
 

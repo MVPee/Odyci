@@ -13,11 +13,13 @@ typedef struct s_fps {
 }	t_fps;
 
 typedef struct s_key {
-	bool upPressed;
-	bool downPressed;
+	bool WPressed;
+	bool SPressed;
+	bool DPressed;
+	bool APressed;
+	bool spacePressed;
 	bool rightPressed;
 	bool leftPressed;
-	bool spacePressed;
 }	t_key;
 
 class Game {

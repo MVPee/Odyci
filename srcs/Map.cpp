@@ -25,7 +25,7 @@ void Map::setAssets(void) {
         {'9', sf::IntRect(48, 0, 8, 8)},
         {'A', sf::IntRect(72, 0, 8, 24)},
         {'P', sf::IntRect(56, 0, 16, 16)},
-        {'E', sf::IntRect(0, 72, 8, 8)}
+        {'|', sf::IntRect(0, 72, 8, 8)}
     };
 
     for (int i = 0; i < this->_height; i++) {
@@ -65,22 +65,21 @@ void Map::setAssets(void) {
                     this->_assets[i][j].sprite.move(4 * -SCALE, 8 * -SCALE);
                     this->_assets[i][j].hitbox = false;
                     break;
-                case 'E':
+                case '|':
                     this->_assets[i][j].hitbox = false;
-                    this->_assets[i][j].event = NO_EVENT;
+                    this->_assets[i][j].event = NEXT_MAP;
             }
             this->_assets[i][j].sprite.setTexture(this->_assets[i][j].texture);
         }
     }
 }
 
-Map::Map(std::string srcs, std::string background, Player &player) {
+Map::Map(std::string srcs, Player &player) {
     this->_width = 0;
     this->_height = 0;
 
-    if (!setMap(srcs)) {
+    if (!setMap(srcs, player)) {
         setAssets();
-        this->_backgroundTexture.loadFromFile(background);
         this->_backgroundSprite.setTexture(_backgroundTexture);
 
         this->_text.font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
@@ -89,7 +88,6 @@ Map::Map(std::string srcs, std::string background, Player &player) {
         this->_text.text.setFillColor(sf::Color::White);
         this->_text.text.setPosition(20, 20);
 
-        player.setPos(128, 0);
         player.getSprite().setPosition(player.getPos().x, player.getPos().y);
     }
 }
@@ -116,7 +114,7 @@ Map::~Map() {
 ** --------------------------------- METHODS ----------------------------------
 */
 
-void Map::switchMap(std::string srcs, std::string background, Player &player) {
+void Map::switchMap(std::string srcs, Player &player) {
     if (this->_map) {
         for (int i = 0; i < this->_height; i++)
             delete[] this->_map[i];
@@ -129,13 +127,19 @@ void Map::switchMap(std::string srcs, std::string background, Player &player) {
         delete[] this->_assets;
     }
 
-    if (!setMap(srcs)) {
+    if (!setMap(srcs, player)) {
         setAssets();
-        this->_backgroundTexture.loadFromFile(background);
         this->_backgroundSprite.setTexture(_backgroundTexture);
-        player.setPos(128, 0);
         player.getSprite().setPosition(player.getPos().x, player.getPos().y);
     }
+}
+
+void Map::nextMap(Player &player) {
+	switchMap(this->_nextMap, player);
+}
+
+void Map::previousMap(Player &player) {
+	switchMap(this->_previousMap, player);
 }
 
 void Map::playEvent(int event, int count, Player &player) {
@@ -156,6 +160,9 @@ void Map::playEvent(int event, int count, Player &player) {
             textHeight = this->_text.text.getGlobalBounds().height;
             this->_text.text.setPosition((player.getSprite().getPosition().x - textWidth / 2 + playerCenter) + offsetX, (player.getSprite().getPosition().y + -textHeight * 2) + offsetY);
             break;
+		case NEXT_MAP:
+            nextMap(player);
+            break;
     }
 }
 
@@ -163,13 +170,26 @@ void Map::resetText(void) {
     this->_text.text.setString("");
 }
 
-bool Map::setMap(std::string srcs) {
+bool Map::setMap(std::string srcs, Player &player) {
     std::ifstream file(srcs);
     std::string line;
 
-    if (!file.is_open()) {
+    if (!file.is_open())
         return true;
-    }
+
+	std::getline(file, line);
+    int playerX = std::stoi(line);
+	std::getline(file, line);
+    int playerY = std::stoi(line);
+	std::getline(file, line);
+    this->_nextMap = line;
+	std::getline(file, line);
+    this->_previousMap = line;
+	std::getline(file, line);
+	this->_backgroundTexture.loadFromFile(line);
+	std::getline(file, line);
+
+	player.setPos(playerX, playerY);
 
     this->_height = 0;
     this->_width = 0;

@@ -37,13 +37,19 @@ class Map
 		sf::Texture	_backgroundTexture;
 		sf::Sprite	_backgroundSprite;
 
-		bool setMap(std::string srcs);
+		std::string	_nextMap;
+		std::string _previousMap;
+
+		bool setMap(std::string srcs, Player &player);
 		void setAssets(void);
 	public:
-		Map(std::string srcs, std::string background, Player &player);
+		Map(std::string srcs, Player &player);
 		~Map();
 
-		void switchMap(std::string srcs, std::string background, Player &player);
+		void switchMap(std::string src, Player &player);
+
+		void nextMap(Player &player);
+		void previousMap(Player &player);
 
 		void resetText(void);
 		void playEvent(int event, int count, Player &player);
