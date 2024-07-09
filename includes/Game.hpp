@@ -29,7 +29,7 @@ class Game {
 		Player				*_player;
 		Map					*_map;
 
-		bool check_collision(int x, int y);
+		bool checkCollision(int x, int y);
 		void updateCamera(void);
 		void checkFalling(void);
 		void updateFps(void);

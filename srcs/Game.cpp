@@ -14,8 +14,12 @@ Game::Game(int width, int height, std::string name) {
 	this->_key.leftPressed = false;
 	this->_key.spacePressed = false;
 
-	this->_map = new Map("rsrcs/maps/sandbox.ody");
-
+	this->_map = new Map(
+                            "rsrcs/maps/sandbox.ody", \
+                            "rsrcs/backgrounds/background2.png", \
+                            *this->_player
+                        );
+    
 	this->_window->setFramerateLimit(144);
 
     this->_fps.font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
@@ -32,7 +36,8 @@ Game::Game(int width, int height, std::string name) {
 Game::~Game() {
 	delete this->_window;
 	delete this->_player;
-	delete this->_map;
+    if (this->_map)
+	    delete this->_map;
 }
 
 /*
@@ -103,7 +108,7 @@ void Game::event(void) {
  * @brief Check the collision of the wall's map with the player
  * @return true if collision otherwise false
 */
-bool Game::check_collision(int xSpeed, int ySpeed) {
+bool Game::checkCollision(int xSpeed, int ySpeed) {
     static int count = 0;
     count++;
 
@@ -194,42 +199,22 @@ void Game::checkFalling(void) {
 	int temp;
 	static int count = 0;
 
-    if (this->_map->getGravity()) {
-        temp = SPEED_FALLING;
-        if (!this->_player->getJumping() && check_collision(0, 1)) {
-            count++;
-            if (count < 10)
-                this->_player->getSprite().move(0, 1);
-            else if (check_collision(0, SPEED_FALLING))
-                this->_player->getSprite().move(0, SPEED_FALLING);
-            else {
-                while (!check_collision(0, temp))
-                    temp--;
-                this->_player->getSprite().move(0, temp);
-                count = 0;
-            }
-        }
-        else
+    temp = SPEED_FALLING;
+    if (!this->_player->getJumping() && checkCollision(0, 1)) {
+        count++;
+        if (count < 10)
+            this->_player->getSprite().move(0, 1);
+        else if (checkCollision(0, SPEED_FALLING))
+            this->_player->getSprite().move(0, SPEED_FALLING);
+        else {
+            while (!checkCollision(0, temp))
+                temp--;
+            this->_player->getSprite().move(0, temp);
             count = 0;
-    }
-    else {
-        temp = -SPEED_FALLING;
-        if (!this->_player->getJumping() && check_collision(0, -1)) {
-            count++;
-            if (count < 10)
-                this->_player->getSprite().move(0, -1);
-            else if (check_collision(0, -SPEED_FALLING))
-                this->_player->getSprite().move(0, -SPEED_FALLING);
-            else {
-                while (!check_collision(0, temp))
-                    temp++;
-                this->_player->getSprite().move(0, temp);
-                count = 0;
-            }
         }
-        else
-            count = 0;
     }
+    else
+        count = 0;
 }
 
 void Game::updateFps(void) {
@@ -245,23 +230,23 @@ void Game::update(void) {
 	checkFalling();
     updateFps();
 
-    if (this->_key.rightPressed && check_collision(SPEED, 0)) {
+    if (this->_key.rightPressed && checkCollision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);
 		this->_player->rotate('R');
     }
-	if (this->_key.leftPressed && check_collision(-SPEED, 0)) {
+	if (this->_key.leftPressed && checkCollision(-SPEED, 0)) {
         this->_player->getSprite().move(-SPEED, 0);
 		this->_player->rotate('L');
     }
-	// if (this->_key.downPressed && check_collision(0, SPEED)) {
-    //     this->_player->getSprite().move(0, SPEED);
+
+	// if (this->_key.downPressed) {
     // }
 
     this->_player->setFlying(false);
-    if (((this->_key.spacePressed && !check_collision(0, 1)) || this->_player->getJumping() > 0)) {
-        this->_player->jump(check_collision(0, -JUMP_SPEED), this->_key.spacePressed);
+    if (((this->_key.spacePressed && !checkCollision(0, 1)) || this->_player->getJumping() > 0)) {
+        this->_player->jump(checkCollision(0, -JUMP_SPEED), this->_key.spacePressed);
     } 
-    else if (this->_key.spacePressed && check_collision(0, -FLY_FALL_SPEED) && check_collision(0, 1)) {
+    else if (this->_key.spacePressed && checkCollision(0, -FLY_FALL_SPEED) && checkCollision(0, 1)) {
         this->_player->setFlying(true);
         this->_player->getSprite().move(0, -FLY_FALL_SPEED);
     }

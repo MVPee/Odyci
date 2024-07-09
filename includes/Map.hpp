@@ -37,12 +37,10 @@ class Map
 		sf::Texture	_backgroundTexture;
 		sf::Sprite	_backgroundSprite;
 
-		bool		_gravity;
-		sf::Clock	_gravityClock;
 		bool setMap(std::string srcs);
 		void setAssets(void);
 	public:
-		Map(std::string srcs);
+		Map(std::string srcs, std::string background, Player &player);
 		~Map();
 
 		void resetText(void);
@@ -54,7 +52,6 @@ class Map
 		bool getHitbox(int y, int x);
 		bool getKill(int y, int x);
 		int getEvent(int y, int x);
-		bool getGravity(void);
 		sf::Text &getText(void);
 };
 

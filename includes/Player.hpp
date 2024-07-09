@@ -21,6 +21,9 @@ class Player
 		sf::Vector2f getInitialPosition();
 		int getJumping(void);
 		void setJumping(int i);
+		
+		void setPos(int x, int y);
+		sf::Vector2f getPos(void);
 
 		void setFlying(bool flying);
 		void setRotated(bool rotated);

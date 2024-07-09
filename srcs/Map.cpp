@@ -108,14 +108,14 @@ void Map::setAssets(void) {
 	}
 }
 
-Map::Map(std::string srcs) {
+Map::Map(std::string srcs, std::string background, Player &player) {
 	this->_width = 0;
 	this->_height = 0;
 	
 	if (setMap(srcs))
 		return ;
 	setAssets();
-	this->_backgroundTexture.loadFromFile("rsrcs/backgrounds/background2.png");
+	this->_backgroundTexture.loadFromFile(background);
 	this->_backgroundSprite.setTexture(_backgroundTexture);
 
 	this->_text.font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
@@ -124,8 +124,8 @@ Map::Map(std::string srcs) {
 	this->_text.text.setFillColor(sf::Color::White);
 	this->_text.text.setPosition(20, 20);
 
-	this->_gravityClock.restart();
-	this->_gravity = true;
+	player.setPos(128, 0);
+	player.getSprite().setPosition(player.getPos().x, player.getPos().y);
 }
 
 /*
@@ -243,10 +243,6 @@ sf::IntRect Map::getSize(void) {
 
 sf::Text &Map::getText() {
 	return (this->_text.text);
-}
-
-bool Map::getGravity(void) {
-	return (this->_gravity);
 }
 
 /* ************************************************************************** */
