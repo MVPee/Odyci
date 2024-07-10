@@ -21,7 +21,7 @@ Game::Game(int width, int height, std::string name) {
                             *this->_player
                         );
     
-	this->_window->setFramerateLimit(FPS);
+	this->_window->setFramerateLimit(144);
 
     this->_fps.font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
     this->_fps.fpsText.setFont(this->_fps.font);
@@ -119,6 +119,7 @@ void Game::event(void) {
 
 /** 
  * @brief Check the collision of the wall's map with the player
+ * @brief Check the event collision, if true => start event
  * @return true if collision otherwise false
 */
 bool Game::checkCollision(int xSpeed, int ySpeed) {
@@ -189,9 +190,6 @@ bool Game::checkCollision(int xSpeed, int ySpeed) {
     return true;
 }
 
-
-
-
 /** 
  * @brief Update the camera in the middle of the screen
 */
@@ -235,8 +233,9 @@ void Game::checkFalling(void) {
         count = 0;
 }
 
-void Game::updateFps(void) {
-    float fps = 1.f / this->_fps.fpsClock.restart().asSeconds();
+void Game::updateFps(float elapsedTime) {
+    float fps = 1.0f / elapsedTime;
+    std::cout << fps << std::endl;
     this->_fps.fpsText.setString("FPS: " + std::to_string(static_cast<int>(fps)));
 }
 
@@ -246,7 +245,6 @@ void Game::updateFps(void) {
 void Game::update(void) {
 	//updateCamera();
 	checkFalling();
-    //updateFps();
 
     if (this->_key.DPressed && checkCollision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);

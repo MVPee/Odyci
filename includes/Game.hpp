@@ -34,12 +34,12 @@ class Game {
 		bool checkCollision(int x, int y);
 		void updateCamera(void);
 		void checkFalling(void);
-		void updateFps(void);
 	public:
 
 		Game(int width, int height, std::string name);
 		~Game();
 
+		void updateFps(float elapsedTime);
 		bool isRunning(void);
 
 		void event(void);
