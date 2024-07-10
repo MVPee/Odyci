@@ -21,7 +21,7 @@ Game::Game(int width, int height, std::string name) {
                             *this->_player
                         );
     
-	this->_window->setFramerateLimit(144);
+	this->_window->setFramerateLimit(FPS);
 
     this->_fps.font.loadFromFile("rsrcs/fonts/SuperMario256.ttf");
     this->_fps.fpsText.setFont(this->_fps.font);
@@ -196,22 +196,21 @@ bool Game::checkCollision(int xSpeed, int ySpeed) {
  * @brief Update the camera in the middle of the screen
 */
 void Game::updateCamera(void) {
-    // int screenX = this->_window->getSize().x / 2;
-    // int screenY = this->_window->getSize().y / 2;
+    int screenX = this->_window->getSize().x / 2;
+    int screenY = this->_window->getSize().y / 2;
 
-    // int playerX = this->_player->getSprite().getPosition().x;
-    // int playerY = this->_player->getSprite().getPosition().y;
+    int playerX = this->_player->getSprite().getPosition().x;
+    int playerY = this->_player->getSprite().getPosition().y;
 
-    // int moveX = (screenX - playerX)/10;
-    // int moveY = (screenY - playerY)/10;
+    int moveX = (screenX - playerX)/10;
+    int moveY = (screenY - playerY)/10;
 
-    // this->_player->getSprite().move(moveX, moveY);
-    // for (int i = 0; i < this->_map->getSize().height; i++) {
-    //     for (int j = 0; j < this->_map->getSize().width; j++) {
-    //         this->_map->getSprite(i, j).move(moveX, moveY);
-    //     }
-    // }
-    //std::cout << "x " << this->_player->getSprite().getPosition().x << " y " << this->_player->getSprite().getPosition().y << std::endl;
+    this->_player->getSprite().move(moveX, moveY);
+    for (int i = 0; i < this->_map->getSize().height; i++) {
+        for (int j = 0; j < this->_map->getSize().width; j++) {
+            this->_map->getSprite(i, j).move(moveX, moveY);
+        }
+    }
 }
 
 void Game::checkFalling(void) {
@@ -245,9 +244,9 @@ void Game::updateFps(void) {
  * @brief Update the window
 */
 void Game::update(void) {
-	updateCamera();
+	//updateCamera();
 	checkFalling();
-    updateFps();
+    //updateFps();
 
     if (this->_key.DPressed && checkCollision(SPEED, 0)) {
         this->_player->getSprite().move(SPEED, 0);

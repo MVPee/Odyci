@@ -1,6 +1,8 @@
 #ifndef MACRO_HPP
 # define MACRO_HPP
 
+# define FPS 144.0f
+
 # define SPEED 8
 # define SPEED_FALLING 10
 
