@@ -9,6 +9,7 @@
 # define PREVIOUS_MAP 2
 # define TREE 3
 # define GRAVITY 4
+# define DOOR 5
 
 typedef struct s_text {
 	sf::Font	font;

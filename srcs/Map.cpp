@@ -17,6 +17,8 @@ void Map::setAssets(void) {
         {'I', sf::IntRect(32, 0, 8, 8)},
         {'M', sf::IntRect(24, 8, 8, 8)},
         {'N', sf::IntRect(32, 8, 8, 8)},
+        {'Z', sf::IntRect(40, 8, 8, 8)},
+        {'X', sf::IntRect(48, 8, 8, 8)},
         {'D', sf::IntRect(72, 75, 8, 5)},
         {'R', sf::IntRect(64, 72, 5, 8)},
         {'L', sf::IntRect(51, 72, 5, 8)},
@@ -26,7 +28,8 @@ void Map::setAssets(void) {
         {'A', sf::IntRect(72, 0, 8, 24)},
         {'P', sf::IntRect(56, 0, 16, 16)},
         {'|', sf::IntRect(0, 72, 8, 8)},
-		{'\\', sf::IntRect(0, 72, 8, 8)}
+		{'\\', sf::IntRect(0, 72, 8, 8)},
+        {'W', sf::IntRect(11, 16, 5, 8)}
     };
 
     for (int i = 0; i < this->_height; i++) {
@@ -71,6 +74,9 @@ void Map::setAssets(void) {
 					break;
 				case '\\':
                     this->_assets[i][j].event = PREVIOUS_MAP;
+					break;
+                case 'W':
+                    this->_assets[i][j].event = DOOR;
 					break;
             }
             this->_assets[i][j].sprite.setTexture(this->_assets[i][j].texture);
@@ -167,6 +173,12 @@ void Map::playEvent(int event, int count, Player &player) {
             textWidth = this->_text.text.getGlobalBounds().width;
             textHeight = this->_text.text.getGlobalBounds().height;
             this->_text.text.setPosition((player.getSprite().getPosition().x - textWidth / 2 + playerCenter) + offsetX, (player.getSprite().getPosition().y + -textHeight * 2) + offsetY);
+            break;
+        case DOOR:
+            this->_text.text.setString("Door is close...");
+            textWidth = this->_text.text.getGlobalBounds().width;
+            textHeight = this->_text.text.getGlobalBounds().height;
+            this->_text.text.setPosition(WIDTH/2 - textWidth/2 + offsetX, HEIGHT/2 - textHeight/2 + offsetY);
             break;
 		case NEXT_MAP:
             nextMap(player);

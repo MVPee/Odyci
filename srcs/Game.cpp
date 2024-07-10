@@ -17,7 +17,7 @@ Game::Game(int width, int height, std::string name) {
     this->_key.leftPressed = false;
 
 	this->_map = new Map(
-                            "rsrcs/maps/sandbox.ody", \
+                            "rsrcs/maps/spawn.ody", \
                             *this->_player
                         );
     
@@ -235,7 +235,6 @@ void Game::checkFalling(void) {
 
 void Game::updateFps(float elapsedTime) {
     float fps = 1.0f / elapsedTime;
-    std::cout << fps << std::endl;
     this->_fps.fpsText.setString("FPS: " + std::to_string(static_cast<int>(fps)));
 }
 

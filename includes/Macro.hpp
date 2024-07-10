@@ -1,7 +1,7 @@
 #ifndef MACRO_HPP
 # define MACRO_HPP
 
-# define FPS 144.0f
+# define FPS 100.0f
 
 # define SPEED 8
 # define SPEED_FALLING 10
@@ -12,6 +12,9 @@
 # define JUMP_SPEED 12
 # define TIME_BEETWEEN_JUMP 0.4
 # define SCALE 6
+
+# define WIDTH  1920
+# define HEIGHT 1080
 
 # include <iostream>
 # include <fstream>

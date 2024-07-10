@@ -1,7 +1,7 @@
 #include "includes/Game.hpp"
 
 int main(void) {
-    Game game(1920, 1080, "Odyci");
+    Game game(WIDTH, HEIGHT, "Odyci");
 
     sf::Clock clock;
     const float timeStep = 1.0f / FPS;
@@ -33,5 +33,5 @@ int main(void) {
         game.display();
     }
 
-    return 0;
+    return (EXIT_SUCCESS);
 }
